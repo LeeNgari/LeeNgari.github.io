@@ -20,7 +20,7 @@ assets/
   app.js              console boot + query/write UI + mascot
   favicon.svg
   og.png              1200×630 social card
-  Lee-Ngari-CV.pdf    generated from cv.html
+  LeeNgari_Resume.pdf official resume, linked from the site
   fonts/              self-hosted woff2 files
 data/content.json     canonical content used by the WASM seed and the fallback
                       (including the first visitors row)
@@ -108,17 +108,14 @@ persisted; `reset()` restores the seed.
   changes), then rebuild the WASM.
 - **Experience copy:** `index.html` and `cv.html`
 - **Social card:** `scripts/og.html`, then re-render `assets/og.png`.
-- **CV PDF:** edit `cv.html`, then re-render the PDF.
+- **Official resume:** replace `assets/LeeNgari_Resume.pdf` with the latest
+  export. `cv.html` remains an optional print-friendly view.
+- **CV page:** edit `cv.html` for the web/print version; it does not regenerate
+  the linked resume.
 
-Re-render commands (headless Microsoft Edge on Windows):
+Re-render the social card (headless Microsoft Edge on Windows):
 
 ```powershell
-& "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" `
-  --headless --disable-gpu --no-pdf-header-footer --virtual-time-budget=5000 `
-  --user-data-dir="$env:TEMP\edge-pdf" `
-  --print-to-pdf="$PWD\assets\Lee-Ngari-CV.pdf" `
-  "file:///$($PWD.Path -replace '\\','/')/cv.html"
-
 & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" `
   --headless --disable-gpu --hide-scrollbars --window-size=1200,630 `
   --virtual-time-budget=4000 --user-data-dir="$env:TEMP\edge-og" `

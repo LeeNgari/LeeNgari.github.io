@@ -299,7 +299,7 @@ async function main() {
 	// Asset checks
 	for (const asset of [
 		'/cv.html',
-		'/assets/Lee-Ngari-CV.pdf',
+		'/assets/LeeNgari_Resume.pdf',
 		'/assets/og.png',
 		'/assets/favicon.svg',
 		'/data/content.json',
