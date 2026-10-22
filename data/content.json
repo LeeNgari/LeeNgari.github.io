@@ -1,0 +1,80 @@
+{
+  "experience": [
+    {
+      "id": 1,
+      "company": "Microsoft",
+      "role": "Software Engineering Intern",
+      "period": "Jul — Sep 2026",
+      "start_date": "2026-07-01",
+      "summary": "Worked on kernel-level telemetry: separating high-impact crash signals from noise, then classifying active anomalies at scale.",
+      "impact": "Built a post-triage analytics pipeline from scratch and optimized the classifier for a 69% runtime reduction."
+    },
+    {
+      "id": 2,
+      "company": "Aga Khan University Hospital",
+      "role": "Associate Application Developer",
+      "period": "May — Jul 2026",
+      "start_date": "2026-05-01",
+      "summary": "An engineering team was deploying by hand and hosting code externally. I pitched, built, and migrated them to a self-hosted Git and CI/CD platform.",
+      "impact": "Moved 100+ repositories with zero data loss. Deployments now ship without downtime and support automated rollback."
+    },
+    {
+      "id": 3,
+      "company": "Aga Khan University Hospital",
+      "role": "Applications Development Intern",
+      "period": "Sep 2025 — Mar 2026",
+      "start_date": "2025-09-01",
+      "summary": "Designed and built an enterprise claims platform for hospitals and partner insurers, replacing coordination by phone and email.",
+      "impact": "Delivered the full claim lifecycle with CI/CD, automated tests, and Grafana and Loki observability."
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "JoyDB",
+      "language": "Go",
+      "stack": "Go · B+Tree · WAL",
+      "year": 2026,
+      "headline": "A relational database engine, built from scratch.",
+      "detail": "Lexer, recursive-descent parser, plan tree, and executor. Write-ahead log with CRC32 checksums and crash recovery. A B+Tree index that cut insert latency by 41%.",
+      "stat": "41% lower insert latency",
+      "link": "https://github.com/LeeNgari/JoyDb"
+    },
+    {
+      "id": 2,
+      "name": "Watch Party",
+      "language": "Java",
+      "stack": "Java · Spring Boot · WebSocket · WebRTC",
+      "year": 2025,
+      "headline": "Watch movies together, perfectly in sync.",
+      "detail": "Synchronized play, pause, and seek; live chat over WebSockets; chunked video streaming with HTTP range requests; peer-to-peer calls inside every room.",
+      "stat": "Sub-second sync",
+      "link": ""
+    },
+    {
+      "id": 3,
+      "name": "CampusAid",
+      "language": "Python",
+      "stack": "Azure Functions · Python",
+      "year": 2025,
+      "headline": "A past-paper repository students actually used.",
+      "detail": "Noticed students were revising from group chats. Built and launched a searchable archive, then grew it through user feedback and direct promotion.",
+      "stat": "2,000+ users · 5,000+ documents",
+      "link": "https://campusaid.co.ke"
+    }
+  ],
+  "metrics": [
+    { "id": 1, "experience_id": 1, "label": "Pipeline runtime", "value": "−69%", "context": "Classifier optimized after deployment" },
+    { "id": 2, "experience_id": 1, "label": "Anomalies classified", "value": "10,000+", "context": "Active kernel-crash anomalies" },
+    { "id": 3, "experience_id": 2, "label": "Repositories migrated", "value": "100+", "context": "Zero data loss" },
+    { "id": 4, "experience_id": 2, "label": "Deploy downtime", "value": "0", "context": "Automated pipelines with rollback" },
+    { "id": 5, "experience_id": 3, "label": "Claim platforms", "value": "1", "context": "Hospitals and partner insurers" }
+  ],
+  "stack": [
+    { "id": 1, "category": "Languages", "items": "Go, Python, C#, JavaScript, Java, PowerShell, SQL" },
+    { "id": 2, "category": "Frameworks", "items": "Spring Boot, .NET, React, Node.js, Azure Functions" },
+    { "id": 3, "category": "Data", "items": "PostgreSQL, MS SQL Server, JoyDB" },
+    { "id": 4, "category": "Cloud & Ops", "items": "Azure, Docker, Git, Gitea, CI/CD, Grafana, Loki" },
+    { "id": 5, "category": "Systems", "items": "Linux, Windows, TCP/IP, DNS, HTTP, DHCP, OSI, CIDR" }
+  ]
+}

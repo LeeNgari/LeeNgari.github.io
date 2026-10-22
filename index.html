@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lee Ngari — Software Engineer</title>
+<meta name="description" content="Software engineer working on backend systems, data, and production reliability. Microsoft intern. Author of JoyDB, a relational database engine. Open to full-time roles.">
+<meta name="theme-color" content="#F2EFE7">
+<link rel="canonical" href="https://leengari.github.io/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leengari.github.io/">
+<meta property="og:title" content="Lee Ngari — Software Engineer">
+<meta property="og:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB, and builder of things people use.">
+<meta property="og:image" content="https://leengari.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lee Ngari — Software Engineer">
+<meta name="twitter:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB, and builder of things people use.">
+<meta name="twitter:image" content="https://leengari.github.io/assets/og.png">
+
+<link rel="preload" href="assets/fonts/space-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Lee Ngari",
+  "jobTitle": "Software Engineer",
+  "url": "https://leengari.github.io/",
+  "email": "mailto:Leengari99@gmail.com",
+  "sameAs": [
+    "https://github.com/LeeNgari",
+    "https://linkedin.com/in/leengari"
+  ],
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "United States International University – Africa"
+  }
+}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="shell head-inner">
+    <a class="identity" href="#top" aria-label="Lee Ngari, back to top">
+      <span class="identity-mark" aria-hidden="true">LN</span>
+      <span class="identity-name">Lee Ngari</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#joydb">JoyDB live</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="cv-link" href="assets/Lee-Ngari-CV.pdf" download>CV <span aria-hidden="true">↓</span></a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <div class="shell">
+      <div class="hero-meta">
+        <span class="status"><span class="status-dot" aria-hidden="true"></span>Open to full-time roles</span>
+        <span class="mono hero-loc">Software engineer · Nairobi, Kenya</span>
+      </div>
+
+      <h1>I build backend systems<br>that <em>survive</em> production.</h1>
+
+      <p class="hero-lead">
+        Microsoft intern. Author of a relational database engine. I take messy
+        operational problems and turn them into systems people can trust.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#work">See the work</a>
+        <a class="btn btn-line" href="#joydb">Query my career <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof" aria-label="Impact at a glance">
+    <div class="shell proof-grid">
+      <div class="proof-item">
+        <span class="proof-value">−69%</span>
+        <span class="proof-label">classifier runtime</span>
+        <span class="proof-context mono">Microsoft</span>
+      </div>
+      <div class="proof-item">
+        <span class="proof-value">10,000+</span>
+        <span class="proof-label">anomalies classified</span>
+        <span class="proof-context mono">Microsoft</span>
+      </div>
+      <div class="proof-item">
+        <span class="proof-value">100+</span>
+        <span class="proof-label">repositories migrated</span>
+        <span class="proof-context mono">Aga Khan University Hospital</span>
+      </div>
+      <div class="proof-item">
+        <span class="proof-value">2,000+</span>
+        <span class="proof-label">CampusAid users</span>
+        <span class="proof-context mono">CampusAid</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="shell">
+      <div class="section-head">
+        <span class="section-index mono" aria-hidden="true">02</span>
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2>Three things I built when the tool didn't exist.</h2>
+        </div>
+      </div>
+
+      <div class="work-list">
+
+        <article class="work-item work-feature">
+          <span class="work-index mono" aria-hidden="true">01</span>
+          <div class="work-main">
+            <div class="work-title-row">
+              <h3>JoyDB</h3>
+              <span class="work-badge mono">Relational engine</span>
+            </div>
+            <p class="work-stack mono">Go · B+Tree · WAL · SQL</p>
+            <p class="work-desc">
+              A relational database engine built from scratch: lexer, recursive-descent
+              parser, plan tree, and executor. A write-ahead log with CRC32 checksums and
+              crash recovery. A B+Tree index that cut insert latency by 41%.
+            </p>
+
+            <div class="pipeline" aria-hidden="true">
+              <div class="pipeline-flow">
+                <span class="pipe-node">SQL</span>
+                <span class="pipe-arrow">→</span>
+                <span class="pipe-node">LEXER</span>
+                <span class="pipe-arrow">→</span>
+                <span class="pipe-node">PARSER</span>
+                <span class="pipe-arrow">→</span>
+                <span class="pipe-node">PLANNER</span>
+                <span class="pipe-arrow">→</span>
+                <span class="pipe-node">EXECUTOR</span>
+                <span class="pipe-arrow">→</span>
+                <span class="pipe-node pipe-node-out">ROWS</span>
+              </div>
+              <div class="pipeline-aux mono">
+                <span class="pipe-aux-node">WAL / CRC32</span>
+                <span class="pipe-aux-node">B+TREE INDEX</span>
+                <span class="pipe-aux-note">durability + speed</span>
+              </div>
+            </div>
+          </div>
+          <div class="work-meta">
+            <span class="work-stat mono">41% lower insert latency<br>~1 µs point lookups</span>
+            <div class="work-links">
+              <a href="#joydb">Run it live <span aria-hidden="true">↓</span></a>
+              <a href="https://github.com/LeeNgari/JoyDb" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="work-item">
+          <span class="work-index mono" aria-hidden="true">02</span>
+          <div class="work-main">
+            <div class="work-title-row">
+              <h3>Watch Party</h3>
+              <span class="work-badge mono">Real-time</span>
+            </div>
+            <p class="work-stack mono">Java · Spring Boot · WebSocket · WebRTC</p>
+            <p class="work-desc">
+              Watch movies together, perfectly in sync. Play, pause, and seek propagate
+              to every room; chat runs over WebSockets; chunked streaming with HTTP range
+              requests keeps seeking instant; WebRTC adds peer-to-peer calls.
+            </p>
+          </div>
+          <div class="work-meta">
+            <span class="work-stat mono">Sub-second sync<br>P2P audio + video</span>
+          </div>
+        </article>
+
+        <article class="work-item">
+          <span class="work-index mono" aria-hidden="true">03</span>
+          <div class="work-main">
+            <div class="work-title-row">
+              <h3>CampusAid</h3>
+              <span class="work-badge mono">Product</span>
+            </div>
+            <p class="work-stack mono">Azure Functions · Python · Serverless</p>
+            <p class="work-desc">
+              Students were revising from group chats. I built and launched a searchable
+              past-paper archive, then grew it to 2,000+ users and 5,000+ documents through
+              user feedback and direct promotion.
+            </p>
+          </div>
+          <div class="work-meta">
+            <span class="work-stat mono">2,000+ users<br>5,000+ documents</span>
+            <div class="work-links">
+              <a href="https://campusaid.co.ke" target="_blank" rel="noopener">campusaid.co.ke <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark" id="joydb">
+    <div class="shell">
+      <div class="section-head">
+        <span class="section-index mono" aria-hidden="true">03</span>
+        <div>
+          <p class="eyebrow">Live database</p>
+          <h2>This page runs on JoyDB.</h2>
+        </div>
+      </div>
+
+      <div class="joydb-grid">
+        <div class="joydb-copy">
+          <p>
+            I wrote a relational database engine from scratch. Instead of describing it,
+            I compiled the real engine to WebAssembly and loaded my career into it.
+            Everything in the console executes in your browser — no server, no API.
+          </p>
+
+          <ul class="joydb-facts">
+            <li><span class="k">Engine</span><span>JoyDB, compiled from Go to WASM</span></li>
+            <li><span class="k">Storage</span><span>In memory, seeded at boot, never persisted</span></li>
+            <li><span class="k">Access</span><span>Read-only — try a <code>SELECT</code></span></li>
+            <li><span class="k">Boot</span><span id="boot-fact">measuring…</span></li>
+          </ul>
+
+          <p class="joydb-note">
+            <a href="https://github.com/LeeNgari/JoyDb" target="_blank" rel="noopener">Read the JoyDB source <span aria-hidden="true">↗</span></a>
+          </p>
+        </div>
+
+        <div class="console" id="console" data-state="idle">
+          <div class="console-bar">
+            <span class="console-title">JOYDB <span class="console-slash">/</span> WASM</span>
+            <span class="console-status" id="console-status">
+              <span class="console-dot" aria-hidden="true"></span><span id="console-status-text">BOOTING</span>
+            </span>
+          </div>
+
+          <div class="console-body">
+            <div class="console-tabs" role="tablist" aria-label="Console views">
+              <button class="console-tab" id="tab-query" role="tab" aria-selected="true" aria-controls="panel-query" type="button">Query</button>
+              <button class="console-tab" id="tab-schema" role="tab" aria-selected="false" aria-controls="panel-schema" type="button">Schema</button>
+            </div>
+
+            <div id="panel-query" role="tabpanel" aria-labelledby="tab-query">
+              <div class="console-chips" id="console-chips">
+                <button class="chip" type="button" data-example="career">Career</button>
+                <button class="chip" type="button" data-example="impact">Impact · JOIN</button>
+                <button class="chip" type="button" data-example="go">Go projects</button>
+                <button class="chip" type="button" data-example="stack">Stack</button>
+                <button class="chip" type="button" data-example="count">Count</button>
+              </div>
+
+              <form class="console-form" id="console-form" autocomplete="off">
+                <label class="visually-hidden" for="console-input">SQL query</label>
+                <span class="console-prompt" aria-hidden="true">&gt;</span>
+                <input class="console-input" id="console-input" name="query" type="text"
+                       spellcheck="false" autocapitalize="off" autocorrect="off"
+                       placeholder="SELECT * FROM experience" aria-describedby="console-note">
+                <button class="console-run" type="submit">Run</button>
+              </form>
+              <p class="console-note" id="console-note">Read-only. The data is an in-memory copy seeded at boot.</p>
+              <noscript>
+                <p class="console-note" style="color: var(--signal-bright)">JavaScript is required for the live console.</p>
+              </noscript>
+
+              <div class="console-output" id="console-output" aria-live="polite" aria-atomic="true">
+                <p class="console-placeholder">Booting the database…</p>
+              </div>
+            </div>
+
+            <div id="panel-schema" role="tabpanel" aria-labelledby="tab-schema" hidden>
+              <pre class="console-schema"><code>CREATE TABLE experience (
+  id          INT PRIMARY KEY,
+  company     TEXT NOT NULL,
+  role        TEXT NOT NULL,
+  period      TEXT NOT NULL,
+  start_date  DATE NOT NULL,
+  summary     TEXT NOT NULL,
+  impact      TEXT NOT NULL
+);
+
+CREATE TABLE projects (
+  id          INT PRIMARY KEY,
+  name        TEXT NOT NULL,
+  language    TEXT NOT NULL,
+  stack       TEXT NOT NULL,
+  year        INT NOT NULL,
+  headline    TEXT NOT NULL,
+  detail      TEXT NOT NULL,
+  stat        TEXT NOT NULL,
+  link        TEXT
+);
+
+CREATE TABLE metrics (
+  id            INT PRIMARY KEY,
+  experience_id INT NOT NULL,
+  label         TEXT NOT NULL,
+  value         TEXT NOT NULL,
+  context       TEXT NOT NULL,
+  FOREIGN KEY (experience_id) REFERENCES experience(id)
+);
+
+CREATE TABLE stack (
+  id       INT PRIMARY KEY,
+  category TEXT NOT NULL,
+  items    TEXT NOT NULL
+);</code></pre>
+              <p class="console-schema-note mono">4 tables · 16 rows · seeded from data/content.json</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experience">
+    <div class="shell">
+      <div class="section-head">
+        <span class="section-index mono" aria-hidden="true">04</span>
+        <div>
+          <p class="eyebrow">Experience</p>
+          <h2>Production is the test.</h2>
+        </div>
+      </div>
+
+      <div class="xp-list">
+        <article class="xp">
+          <div class="xp-when mono">Jul — Sep 2026</div>
+          <div class="xp-body">
+            <h3>Microsoft</h3>
+            <p class="xp-role mono">Software Engineering Intern</p>
+            <p>
+              Worked on kernel-level telemetry: separating high-impact crash signals
+              from noise, then classifying active anomalies at scale. Built a post-triage
+              analytics pipeline from scratch, then optimized the classifier after deployment.
+            </p>
+            <p class="xp-impact">Reduced pipeline runtime by 69% and cut compute and cloud costs.</p>
+            <ul class="xp-tags mono" aria-label="Highlights">
+              <li>Kernel telemetry</li>
+              <li>10,000+ anomalies</li>
+              <li>Azure</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="xp">
+          <div class="xp-when mono">May — Jul 2026</div>
+          <div class="xp-body">
+            <h3>Aga Khan University Hospital</h3>
+            <p class="xp-role mono">Associate Application Developer · Contract</p>
+            <p>
+              The engineering team was deploying by hand and hosting code externally.
+              I pitched, built, and migrated them to a self-hosted Git and CI/CD platform
+              on internal Windows servers — winning buy-in and full adoption.
+            </p>
+            <p class="xp-impact">Moved 100+ repositories with zero data loss. Deployments now ship without downtime, with automated rollback.</p>
+            <ul class="xp-tags mono" aria-label="Highlights">
+              <li>Gitea</li>
+              <li>CI/CD</li>
+              <li>100+ repos</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="xp">
+          <div class="xp-when mono">Sep 2025 — Mar 2026</div>
+          <div class="xp-body">
+            <h3>Aga Khan University Hospital</h3>
+            <p class="xp-role mono">Applications Development Intern</p>
+            <p>
+              Designed and built an enterprise claims platform for hospitals and partner
+              insurers, replacing coordination by phone and email. Full claim lifecycle:
+              submission, documents, status, approvals, notifications, and reporting.
+            </p>
+            <p class="xp-impact">Delivered the platform with CI/CD, automated tests, and Grafana and Loki observability. In early partner testing before I left.</p>
+            <ul class="xp-tags mono" aria-label="Highlights">
+              <li>Enterprise platform</li>
+              <li>Observability</li>
+              <li>Cross-functional</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <p class="education mono">
+        B.S. Software Engineering — United States International University – Africa, 2026
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="stack">
+    <div class="shell">
+      <div class="section-head">
+        <span class="section-index mono" aria-hidden="true">05</span>
+        <div>
+          <p class="eyebrow">Toolbox</p>
+          <h2>Systems I reach for.</h2>
+        </div>
+      </div>
+
+      <div class="stack-list">
+        <div class="stack-row">
+          <span class="stack-cat mono">Languages</span>
+          <span class="stack-items">Go, Python, C#, JavaScript, Java, PowerShell, SQL</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-cat mono">Frameworks</span>
+          <span class="stack-items">Spring Boot, .NET, React, Node.js, Azure Functions</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-cat mono">Data</span>
+          <span class="stack-items">PostgreSQL, MS SQL Server, JoyDB</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-cat mono">Cloud &amp; Ops</span>
+          <span class="stack-items">Azure, Docker, Git, Gitea, CI/CD, Grafana, Loki</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-cat mono">Systems</span>
+          <span class="stack-items">Linux, Windows, TCP/IP, DNS, HTTP, DHCP, OSI, CIDR</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact">
+    <div class="shell">
+      <div class="section-head">
+        <span class="section-index mono" aria-hidden="true">06</span>
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>Let's build something reliable.</h2>
+        </div>
+      </div>
+
+      <p class="contact-lead">
+        I'm looking for a full-time software engineering role where backend systems,
+        data, and production reliability matter. If that sounds like your team, say hello.
+      </p>
+
+      <div class="contact-actions">
+        <a class="btn btn-solid" href="mailto:Leengari99@gmail.com">Leengari99@gmail.com</a>
+        <a class="btn btn-line" href="https://github.com/LeeNgari" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        <a class="btn btn-line" href="https://linkedin.com/in/leengari" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+        <a class="btn btn-line" href="assets/Lee-Ngari-CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="shell foot-inner">
+    <span>© <span id="year">2026</span> Lee Ngari</span>
+    <span class="mono foot-built">Built with JoyDB → WebAssembly. No frameworks.</span>
+  </div>
+</footer>
+
+<noscript>
+  <div class="no-js-banner shell">
+    The live JoyDB console needs JavaScript. All other content on this page is fully readable without it.
+  </div>
+</noscript>
+
+<script src="assets/app.js" defer></script>
+</body>
+</html>

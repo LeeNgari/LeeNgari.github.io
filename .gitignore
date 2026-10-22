@@ -1,0 +1,11 @@
+# Generated during the WASM build from data/content.json
+wasm/src/data/content.json
+
+# Temporary Google Fonts stylesheet used while vendoring fonts
+scripts/google-fonts.css
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
