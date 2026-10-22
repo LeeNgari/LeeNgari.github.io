@@ -1,4 +1,4 @@
-// Command wasm exposes a read-only JoyDB query endpoint to the browser.
+// Command wasm exposes a small read-write JoyDB playground to the browser.
 // It compiles the real JoyDB engine to WebAssembly and seeds it with the
 // portfolio's own data at boot.
 package main
@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall/js"
 	"time"
+	"unicode/utf8"
 
 	joydb "github.com/leengari/joydb"
 )
@@ -53,11 +54,19 @@ type stackRow struct {
 	Items    string `json:"items"`
 }
 
+type visitor struct {
+	ID        int64  `json:"id"`
+	Name      string `json:"name"`
+	Note      string `json:"note"`
+	CreatedAt string `json:"created_at"`
+}
+
 type content struct {
 	Experience []experience `json:"experience"`
 	Projects   []project    `json:"projects"`
 	Metrics    []metric     `json:"metrics"`
 	Stack      []stackRow   `json:"stack"`
+	Visitors   []visitor    `json:"visitors"`
 }
 
 type queryResponse struct {
@@ -70,11 +79,33 @@ type queryResponse struct {
 	ElapsedMS float64         `json:"elapsedMs"`
 }
 
+type execResponse struct {
+	OK           bool    `json:"ok"`
+	Message      string  `json:"message,omitempty"`
+	RowsAffected int64   `json:"rowsAffected"`
+	LastInsertID int64   `json:"lastInsertId"`
+	Error        string  `json:"error,omitempty"`
+	ElapsedMS    float64 `json:"elapsedMs"`
+}
+
+type actionResponse struct {
+	OK        bool    `json:"ok"`
+	Message   string  `json:"message,omitempty"`
+	ID        int64   `json:"id,omitempty"`
+	Error     string  `json:"error,omitempty"`
+	ElapsedMS float64 `json:"elapsedMs"`
+}
+
 const maxRows = 500
 
 var (
-	db        *joydb.DB
-	queryFunc js.Func
+	store          *joydb.Store
+	db             *joydb.DB
+	cachedContent  content
+	queryFunc      js.Func
+	execFunc       js.Func
+	addVisitorFunc js.Func
+	resetFunc      js.Func
 )
 
 func main() {
@@ -89,7 +120,13 @@ func main() {
 		api["initError"] = err.Error()
 	} else {
 		queryFunc = js.FuncOf(runQuery)
+		execFunc = js.FuncOf(runExec)
+		addVisitorFunc = js.FuncOf(runAddVisitor)
+		resetFunc = js.FuncOf(runReset)
 		api["query"] = queryFunc
+		api["exec"] = execFunc
+		api["addVisitor"] = addVisitorFunc
+		api["reset"] = resetFunc
 		api["engine"] = "JoyDB"
 	}
 	js.Global().Set("JoyDB", js.ValueOf(api))
@@ -103,12 +140,11 @@ func boot() error {
 	if err != nil {
 		return fmt.Errorf("read seed content: %w", err)
 	}
-	var seed content
-	if err := json.Unmarshal(raw, &seed); err != nil {
+	if err := json.Unmarshal(raw, &cachedContent); err != nil {
 		return fmt.Errorf("parse seed content: %w", err)
 	}
 
-	store, err := joydb.Open(":memory:")
+	store, err = joydb.Open(":memory:")
 	if err != nil {
 		return fmt.Errorf("open in-memory store: %w", err)
 	}
@@ -116,13 +152,7 @@ func boot() error {
 	if err != nil {
 		return fmt.Errorf("open portfolio database: %w", err)
 	}
-
-	for _, ddl := range schemaDDL {
-		if _, err := db.Exec(ddl); err != nil {
-			return fmt.Errorf("create schema: %w", err)
-		}
-	}
-	if err := seedData(seed); err != nil {
+	if err := createAndSeed(db); err != nil {
 		return err
 	}
 
@@ -136,6 +166,15 @@ func boot() error {
 		return fmt.Errorf("sanity query returned no rows")
 	}
 	return nil
+}
+
+func createAndSeed(target *joydb.DB) error {
+	for _, ddl := range schemaDDL {
+		if _, err := target.Exec(ddl); err != nil {
+			return fmt.Errorf("create schema: %w", err)
+		}
+	}
+	return seedData(target, cachedContent)
 }
 
 var schemaDDL = []string{
@@ -172,11 +211,17 @@ var schemaDDL = []string{
 		category TEXT NOT NULL,
 		items TEXT NOT NULL
 	)`,
+	`CREATE TABLE visitors (
+		id INT PRIMARY KEY,
+		name TEXT NOT NULL,
+		note TEXT,
+		created_at TEXT NOT NULL
+	)`,
 }
 
-func seedData(seed content) error {
+func seedData(target *joydb.DB, seed content) error {
 	for _, row := range seed.Experience {
-		if _, err := db.Exec(
+		if _, err := target.Exec(
 			`INSERT INTO experience (id, company, role, period, start_date, summary, impact)
 			 VALUES (?, ?, ?, ?, ?, ?, ?)`,
 			row.ID, row.Company, row.Role, row.Period, row.StartDate, row.Summary, row.Impact,
@@ -185,7 +230,7 @@ func seedData(seed content) error {
 		}
 	}
 	for _, row := range seed.Projects {
-		if _, err := db.Exec(
+		if _, err := target.Exec(
 			`INSERT INTO projects (id, name, language, stack, year, headline, detail, stat, link)
 			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			row.ID, row.Name, row.Language, row.Stack, row.Year, row.Headline, row.Detail, row.Stat, nullIfEmpty(row.Link),
@@ -194,7 +239,7 @@ func seedData(seed content) error {
 		}
 	}
 	for _, row := range seed.Metrics {
-		if _, err := db.Exec(
+		if _, err := target.Exec(
 			`INSERT INTO metrics (id, experience_id, label, value, context)
 			 VALUES (?, ?, ?, ?, ?)`,
 			row.ID, row.ExperienceID, row.Label, row.Value, row.Context,
@@ -203,11 +248,19 @@ func seedData(seed content) error {
 		}
 	}
 	for _, row := range seed.Stack {
-		if _, err := db.Exec(
+		if _, err := target.Exec(
 			`INSERT INTO stack (id, category, items) VALUES (?, ?, ?)`,
 			row.ID, row.Category, row.Items,
 		); err != nil {
 			return fmt.Errorf("seed stack %d: %w", row.ID, err)
+		}
+	}
+	for _, row := range seed.Visitors {
+		if _, err := target.Exec(
+			`INSERT INTO visitors (id, name, note, created_at) VALUES (?, ?, ?, ?)`,
+			row.ID, row.Name, row.Note, row.CreatedAt,
+		); err != nil {
+			return fmt.Errorf("seed visitor %d: %w", row.ID, err)
 		}
 	}
 	return nil
@@ -221,12 +274,7 @@ func runQuery(_ js.Value, args []js.Value) (out interface{}) {
 			response = queryResponse{Error: fmt.Sprintf("engine panic: %v", recovered)}
 		}
 		response.ElapsedMS = milliseconds(time.Since(started))
-		encoded, err := json.Marshal(response)
-		if err != nil {
-			out = `{"ok":false,"error":"could not encode result"}`
-			return
-		}
-		out = string(encoded)
+		out = encode(response)
 	}()
 
 	if db == nil {
@@ -243,7 +291,7 @@ func runQuery(_ js.Value, args []js.Value) (out interface{}) {
 		return nil
 	}
 	if !isReadOnly(sql) {
-		response.Error = "this console is read-only — try a SELECT"
+		response.Error = "query() accepts SELECT only"
 		return nil
 	}
 
@@ -280,9 +328,171 @@ func runQuery(_ js.Value, args []js.Value) (out interface{}) {
 	return nil
 }
 
+func runExec(_ js.Value, args []js.Value) (out interface{}) {
+	started := time.Now()
+	response := execResponse{}
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			response = execResponse{Error: fmt.Sprintf("engine panic: %v", recovered)}
+		}
+		response.ElapsedMS = milliseconds(time.Since(started))
+		out = encode(response)
+	}()
+
+	if db == nil {
+		response.Error = "database is not ready"
+		return nil
+	}
+	if len(args) == 0 {
+		response.Error = "no SQL supplied"
+		return nil
+	}
+	sql := strings.TrimSpace(args[0].String())
+	if sql == "" {
+		response.Error = "no SQL supplied"
+		return nil
+	}
+
+	keyword := firstKeyword(sql)
+	switch keyword {
+	case "INSERT", "UPDATE", "DELETE":
+	default:
+		response.Error = "exec() accepts INSERT, UPDATE, or DELETE"
+		return nil
+	}
+
+	result, err := db.Exec(sql)
+	if err != nil {
+		response.Error = err.Error()
+		return nil
+	}
+
+	response.OK = true
+	response.RowsAffected = result.RowsAffected()
+	response.LastInsertID = result.LastInsertID()
+	response.Message = fmt.Sprintf("%s %d", keyword, result.RowsAffected())
+	return nil
+}
+
+func runAddVisitor(_ js.Value, args []js.Value) (out interface{}) {
+	started := time.Now()
+	response := actionResponse{}
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			response = actionResponse{Error: fmt.Sprintf("engine panic: %v", recovered)}
+		}
+		response.ElapsedMS = milliseconds(time.Since(started))
+		out = encode(response)
+	}()
+
+	if db == nil {
+		response.Error = "database is not ready"
+		return nil
+	}
+	if len(args) == 0 {
+		response.Error = "a name is required"
+		return nil
+	}
+
+	name := strings.TrimSpace(args[0].String())
+	note := ""
+	if len(args) > 1 {
+		note = strings.TrimSpace(args[1].String())
+	}
+	if name == "" {
+		response.Error = "a name is required"
+		return nil
+	}
+	if utf8.RuneCountInString(name) > 40 {
+		response.Error = "keep the name under 40 characters"
+		return nil
+	}
+	if utf8.RuneCountInString(note) > 80 {
+		response.Error = "keep the note under 80 characters"
+		return nil
+	}
+
+	id, err := nextVisitorID()
+	if err != nil {
+		response.Error = err.Error()
+		return nil
+	}
+	created := time.Now().Format("2006-01-02")
+	if _, err := db.Exec(
+		`INSERT INTO visitors (id, name, note, created_at) VALUES (?, ?, ?, ?)`,
+		id, name, note, created,
+	); err != nil {
+		response.Error = err.Error()
+		return nil
+	}
+
+	response.OK = true
+	response.ID = id
+	response.Message = "visitor added"
+	return nil
+}
+
+func runReset(_ js.Value, _ []js.Value) (out interface{}) {
+	started := time.Now()
+	response := actionResponse{}
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			response = actionResponse{Error: fmt.Sprintf("engine panic: %v", recovered)}
+		}
+		response.ElapsedMS = milliseconds(time.Since(started))
+		out = encode(response)
+	}()
+
+	if store == nil {
+		response.Error = "database is not ready"
+		return nil
+	}
+	if err := store.DropDB("portfolio"); err != nil {
+		response.Error = err.Error()
+		return nil
+	}
+	fresh, err := store.DB("portfolio")
+	if err != nil {
+		response.Error = err.Error()
+		return nil
+	}
+	db = fresh
+	if err := createAndSeed(db); err != nil {
+		response.Error = err.Error()
+		return nil
+	}
+
+	response.OK = true
+	response.Message = "database reset"
+	return nil
+}
+
+func nextVisitorID() (int64, error) {
+	rows, err := db.Query("SELECT MAX(id) AS max_id FROM visitors")
+	if err != nil {
+		return 0, err
+	}
+	defer rows.Close()
+
+	var maxID int64
+	if rows.Next() {
+		if err := rows.Scan(&maxID); err != nil {
+			return 0, err
+		}
+	}
+	return maxID + 1, nil
+}
+
 func isReadOnly(sql string) bool {
-	upper := strings.ToUpper(strings.TrimSpace(sql))
-	return strings.HasPrefix(upper, "SELECT")
+	return firstKeyword(sql) == "SELECT"
+}
+
+func firstKeyword(sql string) string {
+	fields := strings.Fields(sql)
+	if len(fields) == 0 {
+		return ""
+	}
+	return strings.ToUpper(fields[0])
 }
 
 func nullIfEmpty(value string) interface{} {
@@ -290,6 +500,14 @@ func nullIfEmpty(value string) interface{} {
 		return nil
 	}
 	return value
+}
+
+func encode(value interface{}) string {
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		return `{"ok":false,"error":"could not encode result"}`
+	}
+	return string(encoded)
 }
 
 func milliseconds(duration time.Duration) float64 {

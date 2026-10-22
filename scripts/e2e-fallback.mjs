@@ -63,9 +63,27 @@ async function waitFor(expression, label, timeout = 20000) {
 	throw new Error('Timed out waiting for ' + label);
 }
 
+async function waitForOutput(text, label = text) {
+	await waitFor(
+		`document.getElementById('console-output').textContent.includes(${JSON.stringify(text)})`,
+		label
+	);
+}
+
 function assert(condition, label) {
 	if (!condition) throw new Error('FAIL: ' + label);
 	console.log('PASS: ' + label);
+}
+
+async function readOutput() {
+	return JSON.parse(
+		await evaluate(`(() => JSON.stringify({
+			meta: document.querySelector('#console-output .console-meta')?.textContent || null,
+			error: document.querySelector('#console-output .console-error')?.textContent || null,
+			rows: [...document.querySelectorAll('#console-output tbody tr')].map((row) =>
+				[...row.children].map((cell) => cell.textContent))
+		}))()`)
+	);
 }
 
 async function main() {
@@ -118,31 +136,61 @@ async function main() {
 		`document.querySelectorAll('#console-output tbody tr').length === 3`,
 		'fallback career rows'
 	);
-	const career = JSON.parse(
-		await evaluate(`JSON.stringify({
-			rows: [...document.querySelectorAll('#console-output tbody tr')].map((row) =>
-				[...row.children].map((cell) => cell.textContent)),
-			meta: document.querySelector('#console-output .console-meta')?.textContent,
-			note: document.getElementById('console-note')?.textContent
-		})`)
-	);
+	const career = await readOutput();
 	assert(career.rows[0][0] === 'Microsoft', 'fallback renders career data');
 	assert(/static fallback/.test(career.meta || ''), 'fallback result is labelled');
-	assert(/WebAssembly is unavailable/.test(career.note || ''), 'fallback explanation is shown');
+	assert(
+		/WebAssembly is unavailable/.test(
+			await evaluate(`document.getElementById('console-note').textContent`)
+		),
+		'fallback explanation is shown'
+	);
+
+	assert(
+		await evaluate(`document.getElementById('console-reset').disabled`),
+		'reset is disabled in fallback'
+	);
+	assert(
+		await evaluate(`document.getElementById('visitor-name').disabled`),
+		'visitor form is disabled in fallback'
+	);
+	assert(
+		await evaluate(`document.getElementById('visitor-form').querySelector('button[type="submit"]').disabled`),
+		'visitor submit is disabled in fallback'
+	);
+	assert(
+		/WebAssembly/.test(await evaluate(`document.getElementById('visitor-status').textContent`)),
+		'visitor form explains why it is disabled'
+	);
+
+	await waitFor(
+		`document.querySelector('[data-count="experience"]').textContent === '3'`,
+		'fallback table counts'
+	);
+	assert(
+		(await evaluate(`document.querySelector('[data-count="visitors"]').textContent`)) === '1',
+		'fallback visitor count is correct'
+	);
 
 	await evaluate(`document.querySelector('[data-example="impact"]').click()`);
-	await waitFor(
-		`document.querySelector('#console-output').textContent.includes('Pipeline runtime')`,
-		'fallback impact query'
-	);
-	const impact = JSON.parse(
-		await evaluate(`JSON.stringify({
-			rows: [...document.querySelectorAll('#console-output tbody tr')].length,
-			meta: document.querySelector('#console-output .console-meta')?.textContent
-		})`)
-	);
-	assert(impact.rows === 5, 'fallback join returns 5 rows');
+	await waitForOutput('Pipeline runtime', 'fallback impact query');
+	const impact = await readOutput();
+	assert(impact.rows.length === 5, 'fallback join returns 5 rows');
 	assert(/static fallback/.test(impact.meta || ''), 'fallback join is labelled');
+
+	await evaluate(`document.querySelector('[data-table="projects"]').click()`);
+	await waitForOutput('Watch Party', 'fallback table browser');
+	const table = await readOutput();
+	assert(table.rows.length === 3, 'fallback table browser returns all projects');
+	assert(
+		(await evaluate(`document.getElementById('console-input').value`)) === 'SELECT * FROM projects',
+		'fallback table browser fills the query'
+	);
+
+	await evaluate(`document.querySelector('[data-example="visitors"]').click()`);
+	await waitForOutput('i live here.', 'fallback visitors query');
+	const visitors = await readOutput();
+	assert(visitors.rows.length === 1, 'fallback visitors query returns the seed row');
 
 	console.log('\nAll fallback checks passed.');
 }

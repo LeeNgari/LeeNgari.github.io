@@ -10,6 +10,7 @@ import path from 'node:path';
 const width = Number(process.argv[2] || 1440);
 const outfile = process.argv[3] || 'shot.png';
 const url = process.argv[4] || 'http://127.0.0.1:4173/#joydb';
+const mode = process.argv[5] || '';
 const port = 9223;
 const profile = path.join(os.tmpdir(), 'edge-cdp-' + Date.now());
 
@@ -113,6 +114,12 @@ async function main() {
 		}
 	}
 	await sleep(300);
+	if (mode === 'tables') {
+		await send('Runtime.evaluate', {
+			expression: `document.getElementById('tab-schema').click()`,
+		});
+		await sleep(400);
+	}
 
 	// Return to the top so sticky/fixed elements are captured once, at their real position.
 	await send('Runtime.evaluate', {

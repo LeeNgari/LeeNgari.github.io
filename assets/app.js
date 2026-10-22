@@ -1,6 +1,7 @@
 /* Lee Ngari — portfolio runtime.
    Boots the real JoyDB engine (Go → WebAssembly) when the live section
-   approaches the viewport, then wires the query console. */
+   approaches the viewport, then wires the query console, table browser,
+   visitor row form, reset control, and the Joy mascot. */
 
 (() => {
   'use strict';
@@ -10,8 +11,21 @@
     impact: 'SELECT e.company, m.label, m.value FROM experience AS e INNER JOIN metrics AS m ON e.id = m.experience_id ORDER BY e.id',
     go: "SELECT name, stack FROM projects WHERE language = 'Go'",
     stack: 'SELECT category, items FROM stack ORDER BY id',
+    visitors: 'SELECT id, name, note, created_at FROM visitors ORDER BY id DESC',
     count: 'SELECT COUNT(*) AS projects FROM projects',
   };
+
+  const TABLES = ['experience', 'projects', 'metrics', 'stack', 'visitors'];
+  const IDLE_LINE = "hi. i'm joy. query me.";
+  const TIPS = [
+    "i'm compiled from go. no servers.",
+    "try the JOIN chip. it's my favorite.",
+    'writes are on. reset if you break me.',
+    'every query runs in your tab.',
+    "i'm a learning project. be gentle.",
+    '5 tables. one tiny engine.',
+    'click a table in the Tables tab.',
+  ];
 
   const els = {
     console: document.getElementById('console'),
@@ -22,11 +36,19 @@
     form: document.getElementById('console-form'),
     input: document.getElementById('console-input'),
     run: document.querySelector('.console-run'),
+    reset: document.getElementById('console-reset'),
     chips: Array.from(document.querySelectorAll('[data-example]')),
     tabQuery: document.getElementById('tab-query'),
     tabSchema: document.getElementById('tab-schema'),
     panelQuery: document.getElementById('panel-query'),
     panelSchema: document.getElementById('panel-schema'),
+    joy: document.getElementById('joy'),
+    joyButton: document.getElementById('joy-button'),
+    joyLine: document.getElementById('joy-line'),
+    visitorForm: document.getElementById('visitor-form'),
+    visitorName: document.getElementById('visitor-name'),
+    visitorNote: document.getElementById('visitor-note'),
+    visitorStatus: document.getElementById('visitor-status'),
   };
 
   const yearEl = document.getElementById('year');
@@ -41,6 +63,7 @@
   let hasRunDefault = false;
   let history = [];
   let historyIndex = 0;
+  let moodTimer = null;
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -51,6 +74,39 @@
 
   function setChipsEnabled(enabled) {
     for (const chip of els.chips) chip.disabled = !enabled;
+  }
+
+  function setVisitorEnabled(enabled) {
+    if (els.visitorName) els.visitorName.disabled = !enabled;
+    if (els.visitorNote) els.visitorNote.disabled = !enabled;
+    if (els.visitorForm) {
+      const submit = els.visitorForm.querySelector('button[type="submit"]');
+      if (submit) submit.disabled = !enabled;
+    }
+  }
+
+  function setVisitorStatus(message, isError) {
+    if (!els.visitorStatus) return;
+    els.visitorStatus.textContent = message;
+    els.visitorStatus.classList.toggle('is-error', Boolean(isError));
+  }
+
+  function setMood(mood, line) {
+    if (!els.joy) return;
+    els.joy.dataset.mood = mood;
+    if (line && els.joyLine) els.joyLine.textContent = line;
+    clearTimeout(moodTimer);
+    if (mood !== 'thinking') {
+      moodTimer = setTimeout(() => {
+        els.joy.dataset.mood = 'idle';
+        if (els.joyLine) els.joyLine.textContent = IDLE_LINE;
+      }, 4200);
+    }
+  }
+
+  function statementKeyword(sql) {
+    const match = String(sql).trim().match(/^([a-zA-Z]+)/);
+    return match ? match[1].toUpperCase() : '';
   }
 
   function loadScript(src) {
@@ -76,6 +132,7 @@
     setChipsEnabled(false);
     if (els.input) els.input.disabled = true;
     if (els.run) els.run.disabled = true;
+    if (els.reset) els.reset.disabled = true;
 
     bootPromise = (async () => {
       try {
@@ -120,7 +177,11 @@
         if (els.bootFact) els.bootFact.textContent = bootMs + ' ms, on this device';
         if (els.input) els.input.disabled = false;
         if (els.run) els.run.disabled = false;
+        if (els.reset) els.reset.disabled = false;
+        setVisitorEnabled(true);
         setChipsEnabled(true);
+        refreshCounts();
+        setMood('happy', "hi. i'm joy. i live in your browser.");
         return engine;
       } catch (error) {
         bootFailed = true;
@@ -136,7 +197,12 @@
           els.input.placeholder = 'Free-form SQL needs WebAssembly';
         }
         if (els.run) els.run.disabled = true;
+        if (els.reset) els.reset.disabled = true;
+        setVisitorEnabled(false);
+        setVisitorStatus('Writes need WebAssembly.', true);
         setChipsEnabled(true);
+        setMood('sad', "i couldn't wake up. the examples still work.");
+        loadFallback().catch(() => {});
         return null;
       }
     })();
@@ -149,6 +215,7 @@
     const response = await fetch('data/content.json');
     if (!response.ok) throw new Error('could not load fallback data');
     fallbackData = await response.json();
+    refreshCounts();
     return fallbackData;
   }
 
@@ -156,6 +223,14 @@
     const data = await loadFallback();
     let columns;
     let rows;
+
+    if (String(exampleId).startsWith('table-')) {
+      const table = exampleId.slice(6);
+      const source = data[table] || [];
+      columns = source.length ? Object.keys(source[0]) : [];
+      rows = source.map((row) => columns.map((column) => (row[column] === undefined ? null : row[column])));
+      return { ok: true, columns, rows, count: rows.length, elapsedMs: 0 };
+    }
 
     switch (exampleId) {
       case 'career': {
@@ -181,6 +256,13 @@
       case 'stack': {
         columns = ['category', 'items'];
         rows = data.stack.map((row) => [row.category, row.items]);
+        break;
+      }
+      case 'visitors': {
+        columns = ['id', 'name', 'note', 'created_at'];
+        rows = [...(data.visitors || [])]
+          .sort((a, b) => b.id - a.id)
+          .map((row) => [row.id, row.name, row.note, row.created_at]);
         break;
       }
       case 'count':
@@ -268,11 +350,65 @@
     els.output.appendChild(wrap);
   }
 
+  function renderWriteResult(response) {
+    els.output.replaceChildren();
+
+    if (!response.ok) {
+      const error = document.createElement('p');
+      error.className = 'console-error';
+      error.textContent = response.error || 'Write failed';
+      els.output.appendChild(error);
+      return;
+    }
+
+    const elapsedRaw = Number(response.elapsedMs || 0);
+    const elapsed = elapsedRaw > 0.005 ? elapsedRaw.toFixed(2) : '< 0.01';
+    const meta = document.createElement('p');
+    meta.className = 'console-meta';
+    meta.textContent = elapsed + ' ms · JoyDB / WASM';
+    els.output.appendChild(meta);
+
+    const box = document.createElement('div');
+    box.className = 'write-result';
+    const mark = document.createElement('span');
+    mark.className = 'write-mark';
+    mark.textContent = '✓';
+    const text = document.createElement('span');
+    const affected = Number(response.rowsAffected || 0);
+    text.textContent =
+      (response.message || 'Statement executed') +
+      ' — ' +
+      affected +
+      (affected === 1 ? ' row affected' : ' rows affected');
+    box.append(mark, text);
+    els.output.appendChild(box);
+  }
+
+  async function refreshCounts() {
+    for (const table of TABLES) {
+      let count = '—';
+      if (engine) {
+        try {
+          const response = JSON.parse(engine.query('SELECT COUNT(*) AS n FROM ' + table));
+          if (response.ok && response.rows && response.rows[0]) {
+            count = String(response.rows[0][0]);
+          }
+        } catch (error) {
+          /* leave the em dash */
+        }
+      } else if (fallbackData) {
+        count = String((fallbackData[table] || []).length);
+      }
+      const el = document.querySelector('[data-count="' + table + '"]');
+      if (el) el.textContent = count;
+    }
+  }
+
   async function execute(sql, exampleId) {
     const query = String(sql || '').trim();
     if (!query) return;
 
-    if (els.input && !els.input.disabled) els.input.value = query;
+    if (els.input) els.input.value = query;
 
     if (!engine) {
       if (!bootPromise) await boot();
@@ -280,11 +416,41 @@
     }
 
     if (engine) {
+      const keyword = statementKeyword(query);
       try {
-        const response = JSON.parse(engine.query(query));
-        renderResult(response, 'JoyDB / WASM');
+        if (keyword === 'SELECT') {
+          setMood('thinking', 'selecting…');
+          const response = JSON.parse(engine.query(query));
+          renderResult(response, 'JoyDB / WASM');
+          if (response.ok) {
+            setMood('happy', response.count + (response.count === 1 ? ' row.' : ' rows.'));
+          } else {
+            setMood('sad', "hmm. that one didn't parse.");
+          }
+        } else if (keyword === 'INSERT' || keyword === 'UPDATE' || keyword === 'DELETE') {
+          setMood('thinking', 'writing…');
+          const response = JSON.parse(engine.exec(query));
+          renderWriteResult(response);
+          if (response.ok) {
+            setMood('happy', 'committed.');
+            refreshCounts();
+          } else {
+            setMood('sad', 'the database said no.');
+          }
+        } else {
+          renderResult(
+            {
+              ok: false,
+              error:
+                'DDL is disabled in this demo. Only SELECT, INSERT, UPDATE, and DELETE are enabled — use reset to restore the seed.',
+            },
+            'JoyDB / WASM'
+          );
+          setMood('sad', 'not that one.');
+        }
       } catch (error) {
         renderResult({ ok: false, error: 'Engine error: ' + error.message }, 'JoyDB / WASM');
+        setMood('sad', 'something broke. try again.');
       }
       return;
     }
@@ -303,7 +469,7 @@
       {
         ok: false,
         error:
-          'Free-form SQL needs WebAssembly, which did not load in this browser. The example buttons still work.',
+          'Writes and free-form SQL need WebAssembly, which did not load in this browser. The example buttons still work.',
       },
       'static fallback'
     );
@@ -345,9 +511,22 @@
     els.tabSchema.addEventListener('click', () => selectTab('schema'));
   }
 
-  // Chips
+  // Example chips
   for (const chip of els.chips) {
     chip.addEventListener('click', () => runExample(chip.dataset.example));
+  }
+
+  // Table browser
+  for (const chip of document.querySelectorAll('[data-table]')) {
+    chip.addEventListener('click', () => {
+      const table = chip.dataset.table;
+      if (!table || !TABLES.includes(table)) return;
+      selectTab('query');
+      clearChipState();
+      const sql = 'SELECT * FROM ' + table;
+      if (els.input) els.input.value = sql;
+      execute(sql, 'table-' + table);
+    });
   }
 
   // Form
@@ -376,6 +555,76 @@
         historyIndex = Math.min(history.length, historyIndex + 1);
         els.input.value = history[historyIndex] || '';
       }
+    });
+  }
+
+  // Reset
+  if (els.reset) {
+    els.reset.addEventListener('click', async () => {
+      if (!engine) return;
+      els.reset.disabled = true;
+      try {
+        const response = JSON.parse(engine.reset());
+        if (!response.ok) throw new Error(response.error || 'reset failed');
+        if (els.visitorForm) els.visitorForm.reset();
+        setVisitorStatus('', false);
+        await refreshCounts();
+        selectTab('query');
+        clearChipState();
+        await execute(EXAMPLES.career, 'career');
+        setMood('happy', 'fresh data.');
+      } catch (error) {
+        renderResult({ ok: false, error: 'Reset failed: ' + error.message }, 'JoyDB / WASM');
+        setMood('sad', 'reset failed.');
+      } finally {
+        els.reset.disabled = false;
+      }
+    });
+  }
+
+  // Visitor row
+  if (els.visitorForm) {
+    els.visitorForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = els.visitorName ? els.visitorName.value.trim() : '';
+      const note = els.visitorNote ? els.visitorNote.value.trim() : '';
+
+      if (!name) {
+        setVisitorStatus('Give me a name first.', true);
+        if (els.visitorName) els.visitorName.focus();
+        return;
+      }
+      if (!engine) {
+        setVisitorStatus('Writes need WebAssembly.', true);
+        return;
+      }
+
+      try {
+        const response = JSON.parse(engine.addVisitor(name, note));
+        if (!response.ok) throw new Error(response.error || 'insert failed');
+
+        els.visitorForm.reset();
+        setVisitorStatus('Row added — id ' + response.id + '.', false);
+        setMood('happy', 'welcome to the db.');
+        await refreshCounts();
+        selectTab('query');
+        clearChipState();
+        const sql = 'SELECT id, name, note, created_at FROM visitors ORDER BY id DESC';
+        if (els.input && !els.input.disabled) els.input.value = sql;
+        await execute(sql, null);
+        setMood('happy', 'welcome to the db.');
+      } catch (error) {
+        setVisitorStatus(error.message, true);
+        setMood('sad', 'insert failed.');
+      }
+    });
+  }
+
+  // Joy
+  if (els.joyButton) {
+    els.joyButton.addEventListener('click', () => {
+      const tip = TIPS[Math.floor(Math.random() * TIPS.length)];
+      setMood('happy', tip);
     });
   }
 

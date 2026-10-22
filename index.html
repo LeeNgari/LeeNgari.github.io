@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lee Ngari — Software Engineer</title>
-<meta name="description" content="Software engineer working on backend systems, data, and production reliability. Microsoft intern. Author of JoyDB, a relational database engine. Open to full-time roles.">
+<meta name="description" content="Software engineer working on backend systems, data, and production reliability. Microsoft intern. Author of JoyDB, a relational database engine. Open to entry-level roles.">
 <meta name="theme-color" content="#F2EFE7">
 <link rel="canonical" href="https://leengari.github.io/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -12,13 +12,13 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://leengari.github.io/">
 <meta property="og:title" content="Lee Ngari — Software Engineer">
-<meta property="og:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB, and builder of things people use.">
+<meta property="og:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB. Open to entry-level roles.">
 <meta property="og:image" content="https://leengari.github.io/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lee Ngari — Software Engineer">
-<meta name="twitter:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB, and builder of things people use.">
+<meta name="twitter:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB. Open to entry-level roles.">
 <meta name="twitter:image" content="https://leengari.github.io/assets/og.png">
 
 <link rel="preload" href="assets/fonts/space-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
@@ -69,7 +69,7 @@
   <section class="hero" id="top">
     <div class="shell">
       <div class="hero-meta">
-        <span class="status"><span class="status-dot" aria-hidden="true"></span>Open to full-time roles</span>
+        <span class="status"><span class="status-dot" aria-hidden="true"></span>Open to entry-level roles</span>
         <span class="mono hero-loc">Software engineer · Nairobi, Kenya</span>
       </div>
 
@@ -228,33 +228,79 @@
           <p>
             I wrote a relational database engine from scratch. Instead of describing it,
             I compiled the real engine to WebAssembly and loaded my career into it.
-            Everything in the console executes in your browser — no server, no API.
+            Everything executes in your browser — no server, no API. It's read-write,
+            so add a row or run a query while you're here.
           </p>
 
           <ul class="joydb-facts">
             <li><span class="k">Engine</span><span>JoyDB, compiled from Go to WASM</span></li>
             <li><span class="k">Storage</span><span>In memory, seeded at boot, never persisted</span></li>
-            <li><span class="k">Access</span><span>Read-only — try a <code>SELECT</code></span></li>
+            <li><span class="k">Access</span><span>Read-write — reset anytime</span></li>
             <li><span class="k">Boot</span><span id="boot-fact">measuring…</span></li>
           </ul>
+
+          <div class="joy-card" id="joy" data-mood="idle">
+            <button class="joy-button" id="joy-button" type="button" aria-label="Joy, the JoyDB mascot. Activate for a tip.">
+              <svg class="joy-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <ellipse cx="48" cy="89" rx="23" ry="3.5" fill="#000000" opacity="0.35"/>
+                <g class="joy-body">
+                  <path d="M20 26v38c0 6 12.5 10.5 28 10.5S76 70 76 64V26" fill="#f04a1d"/>
+                  <ellipse cx="48" cy="26" rx="28" ry="10" fill="#ff7a50"/>
+                  <ellipse cx="48" cy="26" rx="19" ry="6" fill="#c23a10" opacity="0.35"/>
+                  <ellipse cx="34" cy="23" rx="4" ry="1.8" fill="#f2efe7" opacity="0.5"/>
+                  <g class="joy-eyes">
+                    <ellipse cx="38" cy="44" rx="7" ry="8" fill="#f2efe7"/>
+                    <ellipse cx="58" cy="44" rx="7" ry="8" fill="#f2efe7"/>
+                    <circle cx="39" cy="45" r="3.2" fill="#12110f"/>
+                    <circle cx="59" cy="45" r="3.2" fill="#12110f"/>
+                    <circle cx="40" cy="43" r="1" fill="#f2efe7"/>
+                    <circle cx="60" cy="43" r="1" fill="#f2efe7"/>
+                  </g>
+                  <path class="mouth mouth-idle" d="M40 57q8 6 16 0" stroke="#12110f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                  <path class="mouth mouth-happy" d="M37 55q11 12 22 0" stroke="#12110f" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                  <path class="mouth mouth-sad" d="M40 61q8-6 16 0" stroke="#12110f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                  <g class="joy-cheeks">
+                    <ellipse cx="28" cy="55" rx="4" ry="2.4" fill="#ff9c7d" opacity="0.8"/>
+                    <ellipse cx="68" cy="55" rx="4" ry="2.4" fill="#ff9c7d" opacity="0.8"/>
+                  </g>
+                  <path d="M20 52q-7 4-9 12" stroke="#f04a1d" stroke-width="4.2" fill="none" stroke-linecap="round"/>
+                  <path d="M76 52q7 4 9 12" stroke="#f04a1d" stroke-width="4.2" fill="none" stroke-linecap="round"/>
+                </g>
+                <g class="joy-dots" fill="#f2efe7">
+                  <circle cx="34" cy="13" r="2.4"/>
+                  <circle cx="48" cy="9" r="2.4"/>
+                  <circle cx="62" cy="13" r="2.4"/>
+                </g>
+              </svg>
+            </button>
+            <div class="joy-bubble">
+              <span class="joy-name mono">JOY</span>
+              <span class="joy-line" id="joy-line">hi. i'm joy. query me.</span>
+            </div>
+          </div>
 
           <p class="joydb-note">
             <a href="https://github.com/LeeNgari/JoyDb" target="_blank" rel="noopener">Read the JoyDB source <span aria-hidden="true">↗</span></a>
           </p>
+          <p class="joydb-disclaimer mono">A learning project, not production software. Be gentle.</p>
         </div>
 
         <div class="console" id="console" data-state="idle">
           <div class="console-bar">
             <span class="console-title">JOYDB <span class="console-slash">/</span> WASM</span>
-            <span class="console-status" id="console-status">
-              <span class="console-dot" aria-hidden="true"></span><span id="console-status-text">BOOTING</span>
-            </span>
+            <div class="console-bar-actions">
+              <span class="console-status" id="console-status">
+                <span class="console-dot" aria-hidden="true"></span><span id="console-status-text">BOOTING</span>
+              </span>
+              <button class="console-reset" id="console-reset" type="button"
+                      title="Restore the seeded data" aria-label="Reset the database to seeded data" disabled>↺ reset</button>
+            </div>
           </div>
 
           <div class="console-body">
             <div class="console-tabs" role="tablist" aria-label="Console views">
               <button class="console-tab" id="tab-query" role="tab" aria-selected="true" aria-controls="panel-query" type="button">Query</button>
-              <button class="console-tab" id="tab-schema" role="tab" aria-selected="false" aria-controls="panel-schema" type="button">Schema</button>
+              <button class="console-tab" id="tab-schema" role="tab" aria-selected="false" aria-controls="panel-schema" type="button">Tables</button>
             </div>
 
             <div id="panel-query" role="tabpanel" aria-labelledby="tab-query">
@@ -263,6 +309,7 @@
                 <button class="chip" type="button" data-example="impact">Impact · JOIN</button>
                 <button class="chip" type="button" data-example="go">Go projects</button>
                 <button class="chip" type="button" data-example="stack">Stack</button>
+                <button class="chip" type="button" data-example="visitors">Visitors</button>
                 <button class="chip" type="button" data-example="count">Count</button>
               </div>
 
@@ -274,7 +321,7 @@
                        placeholder="SELECT * FROM experience" aria-describedby="console-note">
                 <button class="console-run" type="submit">Run</button>
               </form>
-              <p class="console-note" id="console-note">Read-only. The data is an in-memory copy seeded at boot.</p>
+              <p class="console-note" id="console-note">Read-write in this session. The data is in memory; reset restores the seed.</p>
               <noscript>
                 <p class="console-note" style="color: var(--signal-bright)">JavaScript is required for the live console.</p>
               </noscript>
@@ -285,6 +332,32 @@
             </div>
 
             <div id="panel-schema" role="tabpanel" aria-labelledby="tab-schema" hidden>
+              <div class="table-browser" id="table-browser">
+                <p class="console-panel-label mono">Tables</p>
+                <div class="table-grid">
+                  <button class="table-chip" type="button" data-table="experience"><span>experience</span><span class="t-count" data-count="experience">—</span></button>
+                  <button class="table-chip" type="button" data-table="projects"><span>projects</span><span class="t-count" data-count="projects">—</span></button>
+                  <button class="table-chip" type="button" data-table="metrics"><span>metrics</span><span class="t-count" data-count="metrics">—</span></button>
+                  <button class="table-chip" type="button" data-table="stack"><span>stack</span><span class="t-count" data-count="stack">—</span></button>
+                  <button class="table-chip" type="button" data-table="visitors"><span>visitors</span><span class="t-count" data-count="visitors">—</span></button>
+                </div>
+              </div>
+
+              <form class="visitor-form" id="visitor-form" autocomplete="off">
+                <p class="console-panel-label mono">Leave a row</p>
+                <p class="visitor-hint">Add yourself to <code>visitors</code>. It lives in your tab only.</p>
+                <div class="visitor-fields">
+                  <label>Name
+                    <input id="visitor-name" name="name" type="text" maxlength="40" placeholder="your name" required disabled>
+                  </label>
+                  <label>Note
+                    <input id="visitor-note" name="note" type="text" maxlength="80" placeholder="optional" disabled>
+                  </label>
+                  <button class="visitor-submit" type="submit" disabled>Insert row</button>
+                </div>
+                <p class="visitor-status mono" id="visitor-status" role="status"></p>
+              </form>
+
               <pre class="console-schema"><code>CREATE TABLE experience (
   id          INT PRIMARY KEY,
   company     TEXT NOT NULL,
@@ -320,8 +393,15 @@ CREATE TABLE stack (
   id       INT PRIMARY KEY,
   category TEXT NOT NULL,
   items    TEXT NOT NULL
+);
+
+CREATE TABLE visitors (
+  id          INT PRIMARY KEY,
+  name        TEXT NOT NULL,
+  note        TEXT,
+  created_at  TEXT NOT NULL
 );</code></pre>
-              <p class="console-schema-note mono">4 tables · 16 rows · seeded from data/content.json</p>
+              <p class="console-schema-note mono">5 tables · seeded from data/content.json</p>
             </div>
           </div>
         </div>
@@ -450,7 +530,7 @@ CREATE TABLE stack (
       </div>
 
       <p class="contact-lead">
-        I'm looking for a full-time software engineering role where backend systems,
+        I'm looking for an entry-level software engineering role where backend systems,
         data, and production reliability matter. If that sounds like your team, say hello.
       </p>
 

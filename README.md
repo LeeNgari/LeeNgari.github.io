@@ -5,7 +5,9 @@ relational database running in the browser.
 
 The signature piece is **JoyDB Live**: the real [JoyDB](https://github.com/LeeNgari/JoyDb)
 engine — written in Go — is compiled to WebAssembly, seeded with the portfolio's
-data at boot, and exposed through a read-only SQL console. No server, no API.
+data at boot, and exposed through a read-write SQL console. No server, no API.
+Visitors can browse tables, run queries, add themselves to a `visitors` table,
+and reset the database. Joy, a small database mascot, reacts to what happens.
 
 ## Structure
 
@@ -15,16 +17,18 @@ cv.html               print-friendly CV (source for the PDF)
 404.html              not-found page
 assets/
   styles.css          the whole design system
-  app.js              console boot + query UI
+  app.js              console boot + query/write UI + mascot
   favicon.svg
   og.png              1200×630 social card
   Lee-Ngari-CV.pdf    generated from cv.html
   fonts/              self-hosted woff2 files
 data/content.json     canonical content used by the WASM seed and the fallback
+                      (including the first visitors row)
 wasm/
   joydb.wasm          compiled engine (committed)
   wasm_exec.js        Go runtime (must match the Go version used to build)
-  src/                Go entry point that seeds the DB and exposes query()
+  src/                Go entry point that seeds the DB and exposes
+                      query(), exec(), addVisitor(), and reset()
 scripts/
   serve.mjs           local static server with the correct WASM MIME type
   build-wasm.ps1      rebuild joydb.wasm (needs a sibling JoyDb checkout)
@@ -82,15 +86,26 @@ The script copies `data/content.json` into the Go module, builds with
 toolchain. `wasm_exec.js` must come from the same Go version as the build.
 
 The Go bridge lives in `wasm/src/main.go`. It creates an in-memory store with
-`joydb.Open(":memory:")`, creates four tables, seeds them from the embedded JSON,
-and exposes `window.JoyDB.query(sql)` returning JSON. Non-`SELECT` statements are
-rejected so the demo stays predictable.
+`joydb.Open(":memory:")`, creates five tables, seeds them from the embedded JSON,
+and exposes four JSON endpoints on `window.JoyDB`:
+
+| Method | Purpose |
+|---|---|
+| `query(sql)` | `SELECT` only; returns columns and rows |
+| `exec(sql)` | `INSERT`, `UPDATE`, `DELETE`; returns the affected row count |
+| `addVisitor(name, note)` | Parameterized insert into `visitors` with the next id |
+| `reset()` | Drops and reseeds the portfolio database |
+
+DDL (`CREATE`, `DROP`, `ALTER`) is intentionally blocked in the UI so a visitor
+cannot dismantle the demo. Writes live in the page's memory and are never
+persisted; `reset()` restores the seed.
 
 ## Editing content
 
 - **Narrative / layout:** `index.html`
-- **Console data and schema:** `data/content.json` (also update the DDL in
-  `wasm/src/main.go` if the schema changes), then rebuild the WASM.
+- **Console data and schema:** `data/content.json` (including the seeded
+  `visitors` row; also update the DDL in `wasm/src/main.go` if the schema
+  changes), then rebuild the WASM.
 - **Experience copy:** `index.html` and `cv.html`
 - **Social card:** `scripts/og.html`, then re-render `assets/og.png`.
 - **CV PDF:** edit `cv.html`, then re-render the PDF.
@@ -128,13 +143,14 @@ as-is.
 ## Fonts and licenses
 
 Space Grotesk, Instrument Serif, and IBM Plex Mono are self-hosted Latin subsets
-under the SIL Open Font License 1.1. See `assets/fonts/README.md` and
-`assets/fonts/OFL.txt`.
+under the SIL Open Font License 1.1. See `assets/fonts/README.md` and the
+`assets/fonts/OFL-*.txt` files.
 
 ## Notes
 
-- The console is read-only by design. Queries run against a fresh in-memory copy
-  seeded at boot; nothing the visitor does is persisted.
+- The console is read-write within the session. It runs against a fresh in-memory
+  copy seeded at boot; writes and visitor rows are never persisted. DDL is
+  blocked, and `reset` restores the seed.
 - If WebAssembly fails to load, the console falls back to static example results
   and says so. The rest of the page is fully readable without JavaScript.
 - Motion is minimal and respects `prefers-reduced-motion`.
