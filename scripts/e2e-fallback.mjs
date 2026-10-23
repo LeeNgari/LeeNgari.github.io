@@ -8,7 +8,7 @@ import path from 'node:path';
 
 const port = 9225;
 const profile = path.join(os.tmpdir(), 'edge-e2e-fallback-' + Date.now());
-const base = 'http://127.0.0.1:4173';
+const base = process.env.BASE_URL || 'http://127.0.0.1:4173';
 const edge = [
 	'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
 	'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',

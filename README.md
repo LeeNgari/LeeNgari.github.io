@@ -7,7 +7,7 @@ The signature piece is **JoyDB Live**: the real [JoyDB](https://github.com/LeeNg
 engine — written in Go — is compiled to WebAssembly, seeded with the portfolio's
 data at boot, and exposed through a read-write SQL console. No server, no API.
 Visitors can browse tables, run queries, add themselves to a `visitors` table,
-and reset the database. Joy, a small database mascot, reacts to what happens.
+and reset the database. Joy, a pink mascot in the hero, reacts to what happens.
 
 ## Structure
 

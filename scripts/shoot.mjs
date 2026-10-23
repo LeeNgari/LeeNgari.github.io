@@ -103,7 +103,7 @@ async function main() {
 		awaitPromise: true,
 	});
 
-	if (!/cv\.html|404\.html/.test(url)) {
+	if (!/cv\.html|404\.html|^file:/.test(url)) {
 		for (let i = 0; i < 150; i++) {
 			const ready = await send('Runtime.evaluate', {
 				expression: 'Boolean(window.JoyDB && window.JoyDB.ready)',

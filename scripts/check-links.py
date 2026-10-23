@@ -34,7 +34,7 @@ for page in pages:
         check_ref(page, ref, ids)
     # Inline CSS (cv.html) URLs are root-relative.
     for url in re.findall(r'url\(["\']?([^"\')]+)', text):
-        if not url.startswith(("data:", "http")):
+        if not url.startswith(("data:", "http", "#")):
             checked += 1
             if not (root / url).exists():
                 missing.append((page, url, "missing font/file"))

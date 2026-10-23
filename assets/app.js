@@ -16,7 +16,7 @@
   };
 
   const TABLES = ['experience', 'projects', 'metrics', 'stack', 'visitors'];
-  const IDLE_LINE = "hi. i'm joy. query me.";
+  const IDLE_LINE = "hi! i'm joy. click me.";
   const TIPS = [
     "i'm compiled from go. no servers.",
     "try the JOIN chip. it's my favorite.",
@@ -25,6 +25,7 @@
     "i'm a learning project. be gentle.",
     '5 tables. one tiny engine.',
     'click a table in the Tables tab.',
+    "i'm pink now. still a database.",
   ];
 
   const els = {
@@ -181,7 +182,7 @@
         setVisitorEnabled(true);
         setChipsEnabled(true);
         refreshCounts();
-        setMood('happy', "hi. i'm joy. i live in your browser.");
+        setMood('happy', "hi! i'm joy. welcome in.");
         return engine;
       } catch (error) {
         bootFailed = true;

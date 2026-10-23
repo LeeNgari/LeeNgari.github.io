@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lee Ngari — Software Engineer</title>
-<meta name="description" content="Software engineer working on backend systems, data, and production reliability. Microsoft intern. Author of JoyDB, a relational database engine. Open to entry-level roles.">
+<meta name="description" content="Early-career software engineer in Nairobi. Microsoft intern, author of JoyDB, and builder of useful things. Open to entry-level roles.">
 <meta name="theme-color" content="#F2EFE7">
 <link rel="canonical" href="https://leengari.github.io/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -12,13 +12,13 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://leengari.github.io/">
 <meta property="og:title" content="Lee Ngari — Software Engineer">
-<meta property="og:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB. Open to entry-level roles.">
+<meta property="og:description" content="Hi, I'm Lee Ngari — an early-career software engineer in Nairobi. Microsoft intern, author of JoyDB. Open to entry-level roles.">
 <meta property="og:image" content="https://leengari.github.io/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lee Ngari — Software Engineer">
-<meta name="twitter:description" content="Backend systems that survive production. Microsoft intern, author of JoyDB. Open to entry-level roles.">
+<meta name="twitter:description" content="Hi, I'm Lee Ngari — an early-career software engineer in Nairobi. Microsoft intern, author of JoyDB. Open to entry-level roles.">
 <meta name="twitter:image" content="https://leengari.github.io/assets/og.png">
 
 <link rel="preload" href="assets/fonts/space-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
@@ -73,16 +73,90 @@
         <span class="mono hero-loc">Software engineer · Nairobi, Kenya</span>
       </div>
 
-      <h1>I build backend systems<br>that <em>survive</em> production.</h1>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>Hi, I'm <em>Lee Ngari.</em></h1>
+          <p class="hero-lead">
+            I'm early in my career and excited about backend systems, data, and the
+            small details that make software reliable. I've interned at Microsoft and
+            Aga Khan University Hospital, and I'm looking for an entry-level role where
+            I can keep learning and building.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-solid" href="#work">See selected work</a>
+            <a class="btn btn-line" href="#joydb">Query my career <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
 
-      <p class="hero-lead">
-        Microsoft intern. Author of a relational database engine. I take messy
-        operational problems and turn them into systems people can trust.
-      </p>
+        <div class="hero-stage">
+          <div class="stage-head">
+            <span class="stage-label mono"><span class="stage-dot" aria-hidden="true"></span>JOY / PLAYING</span>
+            <span class="stage-note mono">click me</span>
+          </div>
 
-      <div class="hero-actions">
-        <a class="btn btn-solid" href="#work">See the work</a>
-        <a class="btn btn-line" href="#joydb">Query my career <span aria-hidden="true">↓</span></a>
+          <div class="hero-joy" id="joy" data-mood="idle">
+            <div class="joy-bubble">
+              <span class="joy-name mono">JOY</span>
+              <span class="joy-line" id="joy-line">hi! i'm joy. click me.</span>
+            </div>
+            <button class="joy-button" id="joy-button" type="button" aria-label="Joy, the portfolio mascot. Activate for a tip.">
+              <svg class="joy-svg doll-svg" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                <defs>
+                  <radialGradient id="dollHeadFill" cx="35%" cy="28%" r="80%">
+                    <stop offset="0%" stop-color="#ffe0ee"/>
+                    <stop offset="60%" stop-color="#ffb3d1"/>
+                    <stop offset="100%" stop-color="#f58fbb"/>
+                  </radialGradient>
+                  <linearGradient id="dollBodyFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ffb3d1"/>
+                    <stop offset="100%" stop-color="#f58fbb"/>
+                  </linearGradient>
+                </defs>
+                <ellipse class="doll-shadow" cx="120" cy="219" rx="54" ry="9" fill="#12110f" opacity="0.13"/>
+                <g class="doll">
+                  <g class="ear ear-left">
+                    <ellipse cx="88" cy="58" rx="18" ry="45" fill="#ffb3d1" transform="rotate(-12 88 58)"/>
+                    <ellipse cx="90" cy="64" rx="8.5" ry="29" fill="#ffe0ee" transform="rotate(-12 90 64)"/>
+                  </g>
+                  <g class="ear ear-right">
+                    <ellipse cx="152" cy="58" rx="18" ry="45" fill="#ffb3d1" transform="rotate(12 152 58)"/>
+                    <ellipse cx="150" cy="64" rx="8.5" ry="29" fill="#ffe0ee" transform="rotate(12 150 64)"/>
+                  </g>
+                  <path class="doll-arm arm-left" d="M76 158q-24 4-30 28" stroke="#f58fbb" stroke-width="15" stroke-linecap="round" fill="none"/>
+                  <path class="doll-arm arm-right" d="M164 158q24 4 30 28" stroke="#f58fbb" stroke-width="15" stroke-linecap="round" fill="none"/>
+                  <ellipse cx="120" cy="168" rx="50" ry="46" fill="url(#dollBodyFill)"/>
+                  <ellipse cx="120" cy="178" rx="30" ry="26" fill="#ffe0ee" opacity="0.75"/>
+                  <ellipse cx="98" cy="207" rx="17" ry="11" fill="#f58fbb"/>
+                  <ellipse cx="142" cy="207" rx="17" ry="11" fill="#f58fbb"/>
+                  <circle cx="120" cy="108" r="64" fill="url(#dollHeadFill)"/>
+                  <g class="doll-eyes">
+                    <ellipse cx="97" cy="104" rx="6" ry="7.5" fill="#12110f"/>
+                    <ellipse cx="143" cy="104" rx="6" ry="7.5" fill="#12110f"/>
+                    <circle cx="99" cy="101.5" r="2" fill="#ffffff"/>
+                    <circle cx="145" cy="101.5" r="2" fill="#ffffff"/>
+                  </g>
+                  <path class="doll-mouth doll-mouth-idle" d="M109 121q11 9 22 0" stroke="#12110f" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <path class="doll-mouth doll-mouth-happy" d="M104 118q16 18 32 0" stroke="#12110f" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+                  <path class="doll-mouth doll-mouth-sad" d="M109 128q11-8 22 0" stroke="#12110f" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <g class="doll-cheeks">
+                    <ellipse cx="80" cy="121" rx="11" ry="5.5" fill="#f06fa9" opacity="0.35"/>
+                    <ellipse cx="160" cy="121" rx="11" ry="5.5" fill="#f06fa9" opacity="0.35"/>
+                  </g>
+                  <g class="doll-bow" transform="translate(160 44) rotate(12)">
+                    <path d="M0 0q-20-13-25 2q-3 15 25 9z" fill="#f04a1d"/>
+                    <path d="M0 0q20-13 25 2q3 15-25 9z" fill="#f04a1d"/>
+                    <circle cx="0" cy="5" r="6" fill="#c23a10"/>
+                  </g>
+                  <path class="doll-heart" d="M120 197c-8-7-13-12-13-17 0-4 5-6 9-3l4 4 4-4c4-3 9-1 9 3 0 5-5 10-13 17z" fill="#fff5f9" opacity="0.95"/>
+                </g>
+              </svg>
+            </button>
+          </div>
+
+          <span class="stage-spark spark-a" aria-hidden="true">✦</span>
+          <span class="stage-spark spark-b" aria-hidden="true">✦</span>
+          <span class="stage-spark spark-c" aria-hidden="true">✦</span>
+        </div>
       </div>
     </div>
   </section>
@@ -117,8 +191,8 @@
       <div class="section-head">
         <span class="section-index mono" aria-hidden="true">02</span>
         <div>
-          <p class="eyebrow">Selected work</p>
-          <h2>Three things I built when the tool didn't exist.</h2>
+          <p class="eyebrow">Projects</p>
+          <h2>Selected work.</h2>
         </div>
       </div>
 
@@ -238,46 +312,6 @@
             <li><span class="k">Access</span><span>Read-write — reset anytime</span></li>
             <li><span class="k">Boot</span><span id="boot-fact">measuring…</span></li>
           </ul>
-
-          <div class="joy-card" id="joy" data-mood="idle">
-            <button class="joy-button" id="joy-button" type="button" aria-label="Joy, the JoyDB mascot. Activate for a tip.">
-              <svg class="joy-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-                <ellipse cx="48" cy="89" rx="23" ry="3.5" fill="#000000" opacity="0.35"/>
-                <g class="joy-body">
-                  <path d="M20 26v38c0 6 12.5 10.5 28 10.5S76 70 76 64V26" fill="#f04a1d"/>
-                  <ellipse cx="48" cy="26" rx="28" ry="10" fill="#ff7a50"/>
-                  <ellipse cx="48" cy="26" rx="19" ry="6" fill="#c23a10" opacity="0.35"/>
-                  <ellipse cx="34" cy="23" rx="4" ry="1.8" fill="#f2efe7" opacity="0.5"/>
-                  <g class="joy-eyes">
-                    <ellipse cx="38" cy="44" rx="7" ry="8" fill="#f2efe7"/>
-                    <ellipse cx="58" cy="44" rx="7" ry="8" fill="#f2efe7"/>
-                    <circle cx="39" cy="45" r="3.2" fill="#12110f"/>
-                    <circle cx="59" cy="45" r="3.2" fill="#12110f"/>
-                    <circle cx="40" cy="43" r="1" fill="#f2efe7"/>
-                    <circle cx="60" cy="43" r="1" fill="#f2efe7"/>
-                  </g>
-                  <path class="mouth mouth-idle" d="M40 57q8 6 16 0" stroke="#12110f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-                  <path class="mouth mouth-happy" d="M37 55q11 12 22 0" stroke="#12110f" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-                  <path class="mouth mouth-sad" d="M40 61q8-6 16 0" stroke="#12110f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-                  <g class="joy-cheeks">
-                    <ellipse cx="28" cy="55" rx="4" ry="2.4" fill="#ff9c7d" opacity="0.8"/>
-                    <ellipse cx="68" cy="55" rx="4" ry="2.4" fill="#ff9c7d" opacity="0.8"/>
-                  </g>
-                  <path d="M20 52q-7 4-9 12" stroke="#f04a1d" stroke-width="4.2" fill="none" stroke-linecap="round"/>
-                  <path d="M76 52q7 4 9 12" stroke="#f04a1d" stroke-width="4.2" fill="none" stroke-linecap="round"/>
-                </g>
-                <g class="joy-dots" fill="#f2efe7">
-                  <circle cx="34" cy="13" r="2.4"/>
-                  <circle cx="48" cy="9" r="2.4"/>
-                  <circle cx="62" cy="13" r="2.4"/>
-                </g>
-              </svg>
-            </button>
-            <div class="joy-bubble">
-              <span class="joy-name mono">JOY</span>
-              <span class="joy-line" id="joy-line">hi. i'm joy. query me.</span>
-            </div>
-          </div>
 
           <p class="joydb-note">
             <a href="https://github.com/LeeNgari/JoyDb" target="_blank" rel="noopener">Read the JoyDB source <span aria-hidden="true">↗</span></a>

@@ -63,6 +63,10 @@
   --term-text: #ede8dc;
   --term-muted: #a29a8b;
   --ok: #a8d46f;
+  --pink: #ffb3d1;
+  --pink-deep: #f06fa9;
+  --pink-soft: #fce7f0;
+  --pink-line: #f3c3d8;
 
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
@@ -342,6 +346,134 @@ h1 em {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: clamp(30px, 4vw, 44px);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(330px, 0.94fr);
+  gap: clamp(30px, 5vw, 64px);
+  align-items: center;
+  margin-top: clamp(28px, 4vw, 44px);
+}
+
+.hero-copy h1 {
+  margin: 0;
+  max-width: 13ch;
+  font-size: clamp(2.8rem, 5.2vw, 4.9rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.hero-copy .hero-lead {
+  margin-top: 24px;
+  max-width: 50ch;
+  font-size: clamp(1rem, 1.35vw, 1.1rem);
+}
+
+.hero-copy .hero-actions {
+  margin-top: 28px;
+}
+
+/* ---------- Mascot stage ---------- */
+
+.hero-stage {
+  position: relative;
+  width: 100%;
+  min-height: 424px;
+  padding: 18px 20px 20px;
+  border: 1px solid var(--pink-line);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 82%, rgba(255, 255, 255, 0.85), transparent 42%),
+    linear-gradient(155deg, #fce7f0 0%, #f9d9e7 55%, #f6cadf 100%);
+  box-shadow: 0 24px 64px -44px rgba(240, 111, 169, 0.55);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(240, 111, 169, 0.4) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.3;
+  -webkit-mask-image: linear-gradient(to bottom, #000, rgba(0, 0, 0, 0.35) 70%, transparent);
+  mask-image: linear-gradient(to bottom, #000, rgba(0, 0, 0, 0.35) 70%, transparent);
+  pointer-events: none;
+}
+
+.stage-head {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--pink-line);
+}
+
+.stage-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.stage-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: stage-pulse 1.6s ease-in-out infinite;
+}
+
+.stage-note {
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-joy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 13px;
+}
+
+.stage-spark {
+  position: absolute;
+  z-index: 1;
+  color: var(--pink-deep);
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+  animation: sparkle 3.2s ease-in-out infinite;
+}
+
+.spark-a { top: 27%; left: 9%; }
+.spark-b { top: 43%; right: 8%; font-size: 12px; animation-delay: 0.7s; }
+.spark-c { bottom: 15%; left: 14%; font-size: 14px; animation-delay: 1.3s; }
+
+@keyframes stage-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.85) rotate(0deg); }
+  50% { opacity: 0.9; transform: scale(1.15) rotate(12deg); }
 }
 
 /* ---------- Buttons ---------- */
@@ -665,7 +797,7 @@ h2 {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   gap: clamp(34px, 5vw, 68px);
-  align-items: start;
+  align-items: center;
 }
 
 .joydb-copy p {
@@ -1036,19 +1168,14 @@ h2 {
   color: var(--term-muted);
 }
 
-/* ---------- Joy mascot ---------- */
-
-.joy-card {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 28px;
-}
+/* ---------- Joy, the mascot ---------- */
 
 .joy-button {
-  flex: 0 0 auto;
-  width: 82px;
-  height: 82px;
+  position: relative;
+  z-index: 2;
+  width: 250px;
+  height: 250px;
+  margin-top: 2px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -1056,81 +1183,129 @@ h2 {
   -webkit-tap-highlight-color: transparent;
 }
 
-.joy-button:hover .joy-svg {
-  transform: translateY(-2px) rotate(-2deg);
+.joy-button:hover .doll-svg {
+  transform: translateY(-4px) rotate(-2deg);
 }
 
 .joy-svg {
-  width: 82px;
-  height: 82px;
+  width: 250px;
+  height: 250px;
   overflow: visible;
   transition: transform 0.2s ease;
 }
 
-.joy-body {
-  animation: joy-bob 4.4s ease-in-out infinite;
+.doll {
+  animation: doll-bounce 2.7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.doll-shadow {
+  animation: doll-shadow 2.7s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-.joy-eyes {
-  animation: joy-blink 6s ease-in-out infinite;
+.doll-eyes {
+  animation: doll-blink 5.4s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-.mouth-happy,
-.mouth-sad,
-.joy-cheeks,
-.joy-dots {
+.ear-left,
+.ear-right {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+.ear-left {
+  animation: ear-left 2.7s ease-in-out infinite;
+}
+
+.ear-right {
+  animation: ear-right 2.7s ease-in-out infinite;
+}
+
+.doll-arm {
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+.arm-left {
+  animation: arm-left 2.7s ease-in-out infinite;
+}
+
+.arm-right {
+  animation: arm-right 2.7s ease-in-out infinite;
+}
+
+.doll-mouth-happy,
+.doll-mouth-sad {
   display: none;
 }
 
-.joy-card[data-mood="happy"] .mouth-idle,
-.joy-card[data-mood="sad"] .mouth-idle {
+.doll-cheeks ellipse {
+  opacity: 0.35;
+  transition: opacity 0.2s ease;
+}
+
+.hero-joy[data-mood="happy"] .doll-mouth-idle,
+.hero-joy[data-mood="sad"] .doll-mouth-idle {
   display: none;
 }
 
-.joy-card[data-mood="happy"] .mouth-happy,
-.joy-card[data-mood="happy"] .joy-cheeks {
-  display: block;
+.hero-joy[data-mood="happy"] .doll-mouth-happy {
+  display: inline;
 }
 
-.joy-card[data-mood="sad"] .mouth-sad {
-  display: block;
+.hero-joy[data-mood="sad"] .doll-mouth-sad {
+  display: inline;
 }
 
-.joy-card[data-mood="thinking"] .joy-eyes {
+.hero-joy[data-mood="happy"] .doll-cheeks ellipse {
+  opacity: 0.62;
+}
+
+.hero-joy[data-mood="sad"] .doll-cheeks ellipse {
+  opacity: 0.2;
+}
+
+.hero-joy[data-mood="thinking"] .doll {
+  animation-duration: 3.8s;
+}
+
+.hero-joy[data-mood="thinking"] .doll-eyes {
   animation: none;
   transform: scaleY(0.38);
 }
 
-.joy-card[data-mood="thinking"] .joy-dots {
-  display: block;
-  animation: joy-dots 1s ease-in-out infinite;
-}
-
 .joy-bubble {
   position: relative;
-  flex: 1;
-  min-width: 0;
-  padding: 10px 12px;
+  z-index: 2;
+  max-width: 270px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
   background: var(--paper);
+  border: 1px solid rgba(18, 17, 15, 0.18);
+  box-shadow: 3px 3px 0 rgba(18, 17, 15, 0.1);
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  line-height: 1.55;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  text-align: left;
 }
 
-.joy-bubble::before {
+.joy-bubble::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: -5px;
+  bottom: -6px;
+  left: 50%;
   width: 10px;
   height: 10px;
   background: var(--paper);
-  transform: translateY(-50%) rotate(45deg);
+  border-right: 1px solid rgba(18, 17, 15, 0.18);
+  border-bottom: 1px solid rgba(18, 17, 15, 0.18);
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .joy-name {
@@ -1145,19 +1320,49 @@ h2 {
   display: block;
 }
 
-@keyframes joy-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+@keyframes doll-bounce {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  12% { transform: translateY(2px) scale(1.04, 0.96); }
+  28% { transform: translateY(-22px) scale(0.98, 1.03); }
+  42% { transform: translateY(-30px) scale(1, 1); }
+  58% { transform: translateY(0) scale(1.05, 0.95); }
+  72% { transform: translateY(-8px) scale(1, 1); }
+  86% { transform: translateY(0) scale(1, 1); }
 }
 
-@keyframes joy-blink {
+@keyframes doll-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 0.13; }
+  28%, 42% { transform: scaleX(0.78); opacity: 0.08; }
+  58% { transform: scaleX(1.12); opacity: 0.16; }
+}
+
+@keyframes ear-left {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-4deg); }
+  62% { transform: rotate(2deg); }
+}
+
+@keyframes ear-right {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(4deg); }
+  62% { transform: rotate(-2deg); }
+}
+
+@keyframes arm-left {
+  0%, 100% { transform: rotate(0deg); }
+  36% { transform: rotate(-11deg); }
+  66% { transform: rotate(4deg); }
+}
+
+@keyframes arm-right {
+  0%, 100% { transform: rotate(0deg); }
+  36% { transform: rotate(11deg); }
+  66% { transform: rotate(-4deg); }
+}
+
+@keyframes doll-blink {
   0%, 91%, 100% { transform: scaleY(1); }
-  94%, 96% { transform: scaleY(0.08); }
-}
-
-@keyframes joy-dots {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 1; }
+  94%, 96% { transform: scaleY(0.1); }
 }
 
 .joydb-disclaimer {
@@ -1568,6 +1773,15 @@ h2 {
     align-items: flex-start;
     flex-direction: column;
   }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .hero-stage {
+    max-width: 460px;
+    margin: 0 auto;
+    min-height: 400px;
+  }
   .proof-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1702,17 +1916,19 @@ h2 {
   .visitor-fields {
     grid-template-columns: 1fr;
   }
-  .joy-card {
-    gap: 11px;
-    align-items: flex-start;
+  .hero-stage {
+    min-height: 372px;
+    padding: 14px 14px 16px;
+    border-radius: 22px;
   }
   .joy-button,
   .joy-svg {
-    width: 70px;
-    height: 70px;
+    width: 205px;
+    height: 205px;
   }
   .joy-bubble {
-    font-size: 0.66rem;
+    max-width: 240px;
+    font-size: 0.68rem;
   }
   .console-bar-actions {
     gap: 7px;
@@ -1738,6 +1954,7 @@ h2 {
 @media print {
   .site-head,
   .hero-actions,
+  .hero-stage,
   .console,
   .site-foot,
   .no-js-banner {
