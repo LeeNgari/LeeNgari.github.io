@@ -72,25 +72,27 @@
   }
 
   .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
     font-size: 22px;
     font-weight: 600;
     letter-spacing: -0.03em;
   }
 
-  .brand span {
-    display: inline-block;
-    margin-right: 10px;
-    width: 26px;
-    height: 26px;
-    line-height: 26px;
-    text-align: center;
-    background: #12110f;
-    color: #f2efe7;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0;
-    transform: translateY(2px);
+  .brand em {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: #c23a10;
+  }
+
+  .brand-signal {
+    width: 7px;
+    height: 7px;
+    background: #f04a1d;
+    align-self: center;
   }
 
   .meta {
@@ -238,14 +240,14 @@
 
 <div class="og">
   <header>
-    <div class="brand"><span>LN</span>Lee Ngari</div>
+    <div class="brand">Lee <em>Ngari</em><span class="brand-signal"></span></div>
     <div class="meta">Software engineer · Nairobi, Kenya</div>
   </header>
 
   <main>
     <div>
       <h1>Hi, I'm <em>Lee Ngari.</em></h1>
-      <p class="sub">Early-career software engineer in Nairobi. Microsoft intern. Author of JoyDB. Open to entry-level roles.</p>
+      <p class="sub">Early-career software engineer in Nairobi. Microsoft intern. Author of JoyDB. Open to full-time roles.</p>
       <div class="stats">
         <span>−69% pipeline runtime</span>
         <span>10,000+ anomalies</span>
@@ -272,7 +274,6 @@
 
   <footer>
     <span class="url">leengari.github.io</span>
-    <span>JOYDB → WEBASSEMBLY · NO FRAMEWORKS</span>
   </footer>
 </div>
 </body>

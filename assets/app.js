@@ -1,7 +1,7 @@
 /* Lee Ngari — portfolio runtime.
    Boots the real JoyDB engine (Go → WebAssembly) when the live section
    approaches the viewport, then wires the query console, table browser,
-   visitor row form, reset control, and the Joy mascot. */
+   visitor row form, and reset control. */
 
 (() => {
   'use strict';
@@ -16,17 +16,6 @@
   };
 
   const TABLES = ['experience', 'projects', 'metrics', 'stack', 'visitors'];
-  const IDLE_LINE = "hi! i'm joy. click me.";
-  const TIPS = [
-    "i'm compiled from go. no servers.",
-    "try the JOIN chip. it's my favorite.",
-    'writes are on. reset if you break me.',
-    'every query runs in your tab.',
-    "i'm a learning project. be gentle.",
-    '5 tables. one tiny engine.',
-    'click a table in the Tables tab.',
-    "i'm pink now. still a database.",
-  ];
 
   const els = {
     console: document.getElementById('console'),
@@ -43,9 +32,6 @@
     tabSchema: document.getElementById('tab-schema'),
     panelQuery: document.getElementById('panel-query'),
     panelSchema: document.getElementById('panel-schema'),
-    joy: document.getElementById('joy'),
-    joyButton: document.getElementById('joy-button'),
-    joyLine: document.getElementById('joy-line'),
     visitorForm: document.getElementById('visitor-form'),
     visitorName: document.getElementById('visitor-name'),
     visitorNote: document.getElementById('visitor-note'),
@@ -64,7 +50,6 @@
   let hasRunDefault = false;
   let history = [];
   let historyIndex = 0;
-  let moodTimer = null;
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -90,19 +75,6 @@
     if (!els.visitorStatus) return;
     els.visitorStatus.textContent = message;
     els.visitorStatus.classList.toggle('is-error', Boolean(isError));
-  }
-
-  function setMood(mood, line) {
-    if (!els.joy) return;
-    els.joy.dataset.mood = mood;
-    if (line && els.joyLine) els.joyLine.textContent = line;
-    clearTimeout(moodTimer);
-    if (mood !== 'thinking') {
-      moodTimer = setTimeout(() => {
-        els.joy.dataset.mood = 'idle';
-        if (els.joyLine) els.joyLine.textContent = IDLE_LINE;
-      }, 4200);
-    }
   }
 
   function statementKeyword(sql) {
@@ -182,7 +154,6 @@
         setVisitorEnabled(true);
         setChipsEnabled(true);
         refreshCounts();
-        setMood('happy', "hi! i'm joy. welcome in.");
         return engine;
       } catch (error) {
         bootFailed = true;
@@ -202,7 +173,6 @@
         setVisitorEnabled(false);
         setVisitorStatus('Writes need WebAssembly.', true);
         setChipsEnabled(true);
-        setMood('sad', "i couldn't wake up. the examples still work.");
         loadFallback().catch(() => {});
         return null;
       }
@@ -420,24 +390,12 @@
       const keyword = statementKeyword(query);
       try {
         if (keyword === 'SELECT') {
-          setMood('thinking', 'selecting…');
           const response = JSON.parse(engine.query(query));
           renderResult(response, 'JoyDB / WASM');
-          if (response.ok) {
-            setMood('happy', response.count + (response.count === 1 ? ' row.' : ' rows.'));
-          } else {
-            setMood('sad', "hmm. that one didn't parse.");
-          }
         } else if (keyword === 'INSERT' || keyword === 'UPDATE' || keyword === 'DELETE') {
-          setMood('thinking', 'writing…');
           const response = JSON.parse(engine.exec(query));
           renderWriteResult(response);
-          if (response.ok) {
-            setMood('happy', 'committed.');
-            refreshCounts();
-          } else {
-            setMood('sad', 'the database said no.');
-          }
+          if (response.ok) refreshCounts();
         } else {
           renderResult(
             {
@@ -447,11 +405,9 @@
             },
             'JoyDB / WASM'
           );
-          setMood('sad', 'not that one.');
         }
       } catch (error) {
         renderResult({ ok: false, error: 'Engine error: ' + error.message }, 'JoyDB / WASM');
-        setMood('sad', 'something broke. try again.');
       }
       return;
     }
@@ -573,10 +529,8 @@
         selectTab('query');
         clearChipState();
         await execute(EXAMPLES.career, 'career');
-        setMood('happy', 'fresh data.');
       } catch (error) {
         renderResult({ ok: false, error: 'Reset failed: ' + error.message }, 'JoyDB / WASM');
-        setMood('sad', 'reset failed.');
       } finally {
         els.reset.disabled = false;
       }
@@ -606,26 +560,15 @@
 
         els.visitorForm.reset();
         setVisitorStatus('Row added — id ' + response.id + '.', false);
-        setMood('happy', 'welcome to the db.');
         await refreshCounts();
         selectTab('query');
         clearChipState();
         const sql = 'SELECT id, name, note, created_at FROM visitors ORDER BY id DESC';
         if (els.input && !els.input.disabled) els.input.value = sql;
         await execute(sql, null);
-        setMood('happy', 'welcome to the db.');
       } catch (error) {
         setVisitorStatus(error.message, true);
-        setMood('sad', 'insert failed.');
       }
-    });
-  }
-
-  // Joy
-  if (els.joyButton) {
-    els.joyButton.addEventListener('click', () => {
-      const tip = TIPS[Math.floor(Math.random() * TIPS.length)];
-      setMood('happy', tip);
     });
   }
 

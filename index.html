@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lee Ngari — Software Engineer</title>
-<meta name="description" content="Early-career software engineer in Nairobi. Microsoft intern, author of JoyDB, and builder of useful things. Open to entry-level roles.">
+<meta name="description" content="Early-career software engineer in Nairobi. Microsoft intern, author of JoyDB, and builder of useful things. Open to full-time roles.">
 <meta name="theme-color" content="#F2EFE7">
 <link rel="canonical" href="https://leengari.github.io/">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://leengari.github.io/">
 <meta property="og:title" content="Lee Ngari — Software Engineer">
-<meta property="og:description" content="Hi, I'm Lee Ngari — an early-career software engineer in Nairobi. Microsoft intern, author of JoyDB. Open to entry-level roles.">
+<meta property="og:description" content="Hi, I'm Lee Ngari — an early-career software engineer in Nairobi. Microsoft intern, author of JoyDB. Open to full-time roles.">
 <meta property="og:image" content="https://leengari.github.io/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lee Ngari — Software Engineer">
-<meta name="twitter:description" content="Hi, I'm Lee Ngari — an early-career software engineer in Nairobi. Microsoft intern, author of JoyDB. Open to entry-level roles.">
+<meta name="twitter:description" content="Hi, I'm Lee Ngari — an early-career software engineer in Nairobi. Microsoft intern, author of JoyDB. Open to full-time roles.">
 <meta name="twitter:image" content="https://leengari.github.io/assets/og.png">
 
 <link rel="preload" href="assets/fonts/space-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
@@ -51,8 +51,8 @@
 <header class="site-head">
   <div class="shell head-inner">
     <a class="identity" href="#top" aria-label="Lee Ngari, back to top">
-      <span class="identity-mark" aria-hidden="true">LN</span>
-      <span class="identity-name">Lee Ngari</span>
+      <span class="identity-name">Lee <em>Ngari</em></span>
+      <span class="identity-signal" aria-hidden="true"></span>
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="#work">Work</a>
@@ -69,7 +69,7 @@
   <section class="hero" id="top">
     <div class="shell">
       <div class="hero-meta">
-        <span class="status"><span class="status-dot" aria-hidden="true"></span>Open to entry-level roles</span>
+        <span class="status"><span class="status-dot" aria-hidden="true"></span>Open to full-time roles</span>
         <span class="mono hero-loc">Software engineer · Nairobi, Kenya</span>
       </div>
 
@@ -77,10 +77,9 @@
         <div class="hero-copy">
           <h1>Hi, I'm <em>Lee Ngari.</em></h1>
           <p class="hero-lead">
-            I'm early in my career and excited about backend systems, data, and the
-            small details that make software reliable. I've interned at Microsoft and
-            Aga Khan University Hospital, and I'm looking for an entry-level role where
-            I can keep learning and building.
+            I'm early in my career and excited about backend systems, data, and database
+            internals. I'm open to full-time roles where I can keep learning and building.
+            Take a look around — the live JoyDB console is a good place to start.
           </p>
           <div class="hero-actions">
             <a class="btn btn-solid" href="#work">See selected work</a>
@@ -88,100 +87,28 @@
           </div>
         </div>
 
-        <div class="hero-stage">
-          <div class="stage-head">
-            <span class="stage-label mono"><span class="stage-dot" aria-hidden="true"></span>JOY / PLAYING</span>
-            <span class="stage-note mono">click me</span>
-          </div>
-
-          <div class="hero-joy" id="joy" data-mood="idle">
-            <div class="joy-bubble">
-              <span class="joy-name mono">JOY</span>
-              <span class="joy-line" id="joy-line">hi! i'm joy. click me.</span>
+        <div class="hero-side">
+          <a class="hero-query-card" href="#joydb" aria-label="Query my career in the live JoyDB console">
+            <div class="hqc-bar">
+              <span class="hqc-title">JOYDB <span class="hqc-slash">/</span> WASM</span>
+              <span class="hqc-status"><span class="hqc-dot" aria-hidden="true"></span>READY</span>
             </div>
-            <button class="joy-button" id="joy-button" type="button" aria-label="Joy, the portfolio mascot. Activate for a tip.">
-              <svg class="joy-svg doll-svg" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
-                <defs>
-                  <radialGradient id="dollHeadFill" cx="35%" cy="28%" r="80%">
-                    <stop offset="0%" stop-color="#ffe0ee"/>
-                    <stop offset="60%" stop-color="#ffb3d1"/>
-                    <stop offset="100%" stop-color="#f58fbb"/>
-                  </radialGradient>
-                  <linearGradient id="dollBodyFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#ffb3d1"/>
-                    <stop offset="100%" stop-color="#f58fbb"/>
-                  </linearGradient>
-                </defs>
-                <ellipse class="doll-shadow" cx="120" cy="219" rx="54" ry="9" fill="#12110f" opacity="0.13"/>
-                <g class="doll">
-                  <g class="ear ear-left">
-                    <ellipse cx="88" cy="58" rx="18" ry="45" fill="#ffb3d1" transform="rotate(-12 88 58)"/>
-                    <ellipse cx="90" cy="64" rx="8.5" ry="29" fill="#ffe0ee" transform="rotate(-12 90 64)"/>
-                  </g>
-                  <g class="ear ear-right">
-                    <ellipse cx="152" cy="58" rx="18" ry="45" fill="#ffb3d1" transform="rotate(12 152 58)"/>
-                    <ellipse cx="150" cy="64" rx="8.5" ry="29" fill="#ffe0ee" transform="rotate(12 150 64)"/>
-                  </g>
-                  <path class="doll-arm arm-left" d="M76 158q-24 4-30 28" stroke="#f58fbb" stroke-width="15" stroke-linecap="round" fill="none"/>
-                  <path class="doll-arm arm-right" d="M164 158q24 4 30 28" stroke="#f58fbb" stroke-width="15" stroke-linecap="round" fill="none"/>
-                  <ellipse cx="120" cy="168" rx="50" ry="46" fill="url(#dollBodyFill)"/>
-                  <ellipse cx="120" cy="178" rx="30" ry="26" fill="#ffe0ee" opacity="0.75"/>
-                  <ellipse cx="98" cy="207" rx="17" ry="11" fill="#f58fbb"/>
-                  <ellipse cx="142" cy="207" rx="17" ry="11" fill="#f58fbb"/>
-                  <circle cx="120" cy="108" r="64" fill="url(#dollHeadFill)"/>
-                  <g class="doll-eyes">
-                    <ellipse cx="97" cy="104" rx="6" ry="7.5" fill="#12110f"/>
-                    <ellipse cx="143" cy="104" rx="6" ry="7.5" fill="#12110f"/>
-                    <circle cx="99" cy="101.5" r="2" fill="#ffffff"/>
-                    <circle cx="145" cy="101.5" r="2" fill="#ffffff"/>
-                  </g>
-                  <path class="doll-mouth doll-mouth-idle" d="M109 121q11 9 22 0" stroke="#12110f" stroke-width="3" fill="none" stroke-linecap="round"/>
-                  <path class="doll-mouth doll-mouth-happy" d="M104 118q16 18 32 0" stroke="#12110f" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-                  <path class="doll-mouth doll-mouth-sad" d="M109 128q11-8 22 0" stroke="#12110f" stroke-width="3" fill="none" stroke-linecap="round"/>
-                  <g class="doll-cheeks">
-                    <ellipse cx="80" cy="121" rx="11" ry="5.5" fill="#f06fa9" opacity="0.35"/>
-                    <ellipse cx="160" cy="121" rx="11" ry="5.5" fill="#f06fa9" opacity="0.35"/>
-                  </g>
-                  <g class="doll-bow" transform="translate(160 44) rotate(12)">
-                    <path d="M0 0q-20-13-25 2q-3 15 25 9z" fill="#f04a1d"/>
-                    <path d="M0 0q20-13 25 2q3 15-25 9z" fill="#f04a1d"/>
-                    <circle cx="0" cy="5" r="6" fill="#c23a10"/>
-                  </g>
-                  <path class="doll-heart" d="M120 197c-8-7-13-12-13-17 0-4 5-6 9-3l4 4 4-4c4-3 9-1 9 3 0 5-5 10-13 17z" fill="#fff5f9" opacity="0.95"/>
-                </g>
-              </svg>
-            </button>
-          </div>
-
-          <span class="stage-spark spark-a" aria-hidden="true">✦</span>
-          <span class="stage-spark spark-b" aria-hidden="true">✦</span>
-          <span class="stage-spark spark-c" aria-hidden="true">✦</span>
+            <div class="hqc-query">
+              <span class="hqc-prompt" aria-hidden="true">&gt;</span><span class="hqc-kw">SELECT</span> company, role<br><span class="hqc-indent"></span><span class="hqc-kw">FROM</span> experience;<span class="hqc-cursor" aria-hidden="true"></span>
+            </div>
+            <div class="hqc-table">
+              <div class="hqc-row hqc-head"><span>company</span><span>role</span></div>
+              <div class="hqc-row"><span>Microsoft</span><span>Software Engineering Intern</span></div>
+              <div class="hqc-row"><span>Aga Khan</span><span>Associate Developer</span></div>
+              <div class="hqc-row"><span>Aga Khan</span><span>App Dev Intern</span></div>
+            </div>
+            <div class="hqc-foot">
+              <span>3 rows · 0.9 ms · WASM</span>
+              <span class="hqc-cta">Query it live <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+          <p class="hero-query-caption mono">A real SQL engine, compiled to WebAssembly.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="proof" aria-label="Impact at a glance">
-    <div class="shell proof-grid">
-      <div class="proof-item">
-        <span class="proof-value">−69%</span>
-        <span class="proof-label">classifier runtime</span>
-        <span class="proof-context mono">Microsoft</span>
-      </div>
-      <div class="proof-item">
-        <span class="proof-value">10,000+</span>
-        <span class="proof-label">anomalies classified</span>
-        <span class="proof-context mono">Microsoft</span>
-      </div>
-      <div class="proof-item">
-        <span class="proof-value">100+</span>
-        <span class="proof-label">repositories migrated</span>
-        <span class="proof-context mono">Aga Khan University Hospital</span>
-      </div>
-      <div class="proof-item">
-        <span class="proof-value">2,000+</span>
-        <span class="proof-label">CampusAid users</span>
-        <span class="proof-context mono">CampusAid</span>
       </div>
     </div>
   </section>
@@ -512,9 +439,6 @@ CREATE TABLE visitors (
         </article>
       </div>
 
-      <p class="education mono">
-        B.S. Software Engineering — United States International University – Africa, 2026
-      </p>
     </div>
   </section>
 
@@ -545,10 +469,6 @@ CREATE TABLE visitors (
           <span class="stack-cat mono">Cloud &amp; Ops</span>
           <span class="stack-items">Azure, Docker, Git, Gitea, CI/CD, Grafana, Loki</span>
         </div>
-        <div class="stack-row">
-          <span class="stack-cat mono">Systems</span>
-          <span class="stack-items">Linux, Windows, TCP/IP, DNS, HTTP, DHCP, OSI, CIDR</span>
-        </div>
       </div>
     </div>
   </section>
@@ -564,8 +484,8 @@ CREATE TABLE visitors (
       </div>
 
       <p class="contact-lead">
-        I'm looking for an entry-level software engineering role where backend systems,
-        data, and production reliability matter. If that sounds like your team, say hello.
+        I'm looking for a full-time software engineering role where backend systems,
+        data, and production reliability matter. If you're hiring, I'd love to hear from you.
       </p>
 
       <div class="contact-actions">
@@ -582,7 +502,6 @@ CREATE TABLE visitors (
 <footer class="site-foot">
   <div class="shell foot-inner">
     <span>© <span id="year">2026</span> Lee Ngari</span>
-    <span class="mono foot-built">Built with JoyDB → WebAssembly. No frameworks.</span>
   </div>
 </footer>
 
